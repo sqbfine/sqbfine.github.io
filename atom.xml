@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>标题要长</title>
+  
+  <subtitle>奇怪的知识增加了</subtitle>
+  <link href="https://sqbfine.top/atom.xml" rel="self"/>
+  
+  <link href="https://sqbfine.top/"/>
+  <updated>2021-12-20T12:30:57.039Z</updated>
+  <id>https://sqbfine.top/</id>
+  
+  <author>
+    <name>炎武</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="https://sqbfine.top/2021/12/20/hello-world/"/>
+    <id>https://sqbfine.top/2021/12/20/hello-world/</id>
+    <published>2021-12-20T12:30:57.039Z</published>
+    <updated>2021-12-20T12:30:57.039Z</updated>
+    
+    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><pre><code class="text">&lt;!-- more --&gt;</code></pre><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre><code class="bash">$ hexo new &quot;My New Post&quot;</code></pre><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre><code class="bash">$ hexo server</code></pre><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre><code class="bash">$ hexo generate</code></pre><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre><code class="bash">$ hexo deploy</code></pre><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt; for</summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>一个注定伟大的MarkDown</title>
+    <link href="https://sqbfine.top/2021/12/20/%E4%B8%80%E4%B8%AA%E6%B3%A8%E5%AE%9A%E4%BC%9F%E5%A4%A7%E7%9A%84MarkDown/"/>
+    <id>https://sqbfine.top/2021/12/20/%E4%B8%80%E4%B8%AA%E6%B3%A8%E5%AE%9A%E4%BC%9F%E5%A4%A7%E7%9A%84MarkDown/</id>
+    <published>2021-12-20T12:30:57.039Z</published>
+    <updated>2021-12-20T12:30:57.039Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="一级标题"><a href="#一级标题" class="headerlink" title="一级标题"></a>一级标题</h1><p><img src="https://i.loli.net/2021/12/03/ds8ITg5Ja7C2DqN.jpg" alt="avatar"></p><table><thead><tr><th>测试表格</th><th>测试白哦个</th><th>侧搜表格</th><th>hhh</th><th>呵呵呵</th><th>哈哈</th></tr></thead><tbody><tr><td>test</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td></tr></tbody></table><p>[<a href="http://www.baidu.com]">www.baidu.com]</a>: </p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;一级标题&quot;&gt;&lt;a href=&quot;#一级标题&quot; class=&quot;headerlink&quot; title=&quot;一级标题&quot;&gt;&lt;/a&gt;一级标题&lt;/h1&gt;&lt;p&gt;&lt;img src=&quot;https://i.loli.net/2021/12/03/ds8ITg5Ja7C2DqN.jpg&quot; a</summary>
+      
+    
+    
+    
+    <category term="bolg" scheme="https://sqbfine.top/categories/bolg/"/>
+    
+    
+    <category term="hexo" scheme="https://sqbfine.top/tags/hexo/"/>
+    
+    <category term="Mac" scheme="https://sqbfine.top/tags/Mac/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Handler</title>
+    <link href="https://sqbfine.top/2021/12/20/Handler/"/>
+    <id>https://sqbfine.top/2021/12/20/Handler/</id>
+    <published>2021-12-20T12:20:58.000Z</published>
+    <updated>2021-12-20T12:30:57.039Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="简单使用示例"><a href="#简单使用示例" class="headerlink" title="简单使用示例"></a>简单使用示例</h1><h1 id="源码流程"><a href="#源码流程" class="headerlink" title="源码流程"></a>源码流程</h1><h1 id="callback优先级"><a href="#callback优先级" class="headerlink" title="callback优先级"></a>callback优先级</h1><h1 id="延时发送的实现原理"><a href="#延时发送的实现原理" class="headerlink" title="延时发送的实现原理"></a>延时发送的实现原理</h1><h1 id="在主线程中死循环为何不会导致ANR"><a href="#在主线程中死循环为何不会导致ANR" class="headerlink" title="在主线程中死循环为何不会导致ANR"></a>在主线程中死循环为何不会导致ANR</h1><h1 id="同步屏障"><a href="#同步屏障" class="headerlink" title="同步屏障"></a>同步屏障</h1><h1 id="注意内存泄漏"><a href="#注意内存泄漏" class="headerlink" title="注意内存泄漏"></a>注意内存泄漏</h1><h1 id=""><a href="#" class="headerlink" title=""></a></h1>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;简单使用示例&quot;&gt;&lt;a href=&quot;#简单使用示例&quot; class=&quot;headerlink&quot; title=&quot;简单使用示例&quot;&gt;&lt;/a&gt;简单使用示例&lt;/h1&gt;&lt;h1 id=&quot;源码流程&quot;&gt;&lt;a href=&quot;#源码流程&quot; class=&quot;headerlink&quot; title=&quot;源</summary>
+      
+    
+    
+    
+    <category term="Android" scheme="https://sqbfine.top/categories/Android/"/>
+    
+    
+    <category term="framework" scheme="https://sqbfine.top/tags/framework/"/>
+    
+    <category term="handler" scheme="https://sqbfine.top/tags/handler/"/>
+    
+    <category term="源码分析" scheme="https://sqbfine.top/tags/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hexo文章示例</title>
+    <link href="https://sqbfine.top/2021/12/07/Hexo%E6%96%87%E7%AB%A0%E7%A4%BA%E4%BE%8B/"/>
+    <id>https://sqbfine.top/2021/12/07/Hexo%E6%96%87%E7%AB%A0%E7%A4%BA%E4%BE%8B/</id>
+    <published>2021-12-06T16:07:55.000Z</published>
+    <updated>2021-12-20T12:30:57.039Z</updated>
+    
+    <content type="html"><![CDATA[<table><thead><tr><th>寫法</th><th>解釋</th></tr></thead><tbody><tr><td>title</td><td>【必需】文章標題</td></tr><tr><td>date</td><td>【必需】文章創建日期</td></tr><tr><td>updated</td><td>【可選】文章更新日期</td></tr><tr><td>tags</td><td>【可選】文章標籤</td></tr><tr><td>categories</td><td>【可選】文章分類</td></tr><tr><td>keywords</td><td>【可選】文章關鍵字</td></tr><tr><td>description</td><td>【可選】文章描述</td></tr><tr><td>top_img</td><td>【可選】文章頂部圖片</td></tr><tr><td>cover</td><td>【可選】文章縮略圖(如果沒有設置top_img,文章頁頂部將顯示縮略圖，可設為false/圖片地址/留空)</td></tr><tr><td>comments</td><td>【可選】顯示文章評論模塊(默認 true)</td></tr><tr><td>highlight_shrink</td><td>【可選】配置代碼框是否展開(true/false)(默認為設置中highlight_shrink的配置)</td></tr><tr><td>aside</td><td>【可選】顯示側邊欄 (默認 true)</td></tr></tbody></table>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;寫法&lt;/th&gt;
+&lt;th&gt;解釋&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;title&lt;/td&gt;
+&lt;td&gt;【必需】文章標題&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;date&lt;/td&gt;
+&lt;td&gt;【必需】文章</summary>
+      
+    
+    
+    
+    <category term="博客搭建" scheme="https://sqbfine.top/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"/>
+    
+    
+    <category term="hexo" scheme="https://sqbfine.top/tags/hexo/"/>
+    
+  </entry>
+  
+</feed>
