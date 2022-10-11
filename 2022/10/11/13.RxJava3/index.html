@@ -1,0 +1,345 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>RxJava3 | 炎武的学习笔记</title><meta name="keywords" content="Android，源码分析"><meta name="author" content="炎武"><meta name="copyright" content="炎武"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="RxJava3Single.just的工作流程var single &#x3D; Single.just(&quot;1&quot;)&#x2F;&#x2F;被观察对象 single &#x3D; single.subscribeOn(Schedulers.io())   single.observeOn(AndroidSchedulers.mainThread())     .subscribe(object: SingleObser">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RxJava3">
+<meta property="og:url" content="https://sqbfine.top/2022/10/11/13.RxJava3/index.html">
+<meta property="og:site_name" content="炎武的学习笔记">
+<meta property="og:description" content="RxJava3Single.just的工作流程var single &#x3D; Single.just(&quot;1&quot;)&#x2F;&#x2F;被观察对象 single &#x3D; single.subscribeOn(Schedulers.io())   single.observeOn(AndroidSchedulers.mainThread())     .subscribe(object: SingleObser">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sqbfine.top/img/avatar2.jpg">
+<meta property="article:published_time" content="2022-10-11T06:58:44.605Z">
+<meta property="article:modified_time" content="2022-10-11T06:58:44.605Z">
+<meta property="article:author" content="炎武">
+<meta property="article:tag" content="Android，源码分析">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sqbfine.top/img/avatar2.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://sqbfine.top/2022/10/11/13.RxJava3/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'RxJava3',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-10-11 14:58:44'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="炎武的学习笔记" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/avatar2.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">炎武的学习笔记</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">RxJava3</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-10-11T06:58:44.605Z" title="发表于 2022-10-11 14:58:44">2022-10-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-10-11T06:58:44.605Z" title="更新于 2022-10-11 14:58:44">2022-10-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Android/">Android</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="RxJava3"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="RxJava3"><a href="#RxJava3" class="headerlink" title="RxJava3"></a>RxJava3</h1><h2 id="Single-just的工作流程"><a href="#Single-just的工作流程" class="headerlink" title="Single.just的工作流程"></a>Single.just的工作流程</h2><pre><code class="kotlin">var single = Single.just(&quot;1&quot;)//被观察对象
+single = single.subscribeOn(Schedulers.io())
+  single.observeOn(AndroidSchedulers.mainThread())
+    .subscribe(object: SingleObserver&lt;MutableList&lt;Repo&gt;?&gt; &#123;//内部为观察者，subscribe表示关联
+        override fun onSuccess(repos: MutableList&lt;Repo&gt;?) &#123;
+        
+        &#125;
+        override fun onSubscribe(d: Disposable?) &#123;
+            //    网络请求前会调用 Disposable可以让上游停止工作
+        &#125;
+        override fun onSuccess(e: Throwable) &#123;
+        
+        &#125;
+    &#125;)
+</code></pre>
+<p>Single.just</p>
+<pre><code>RxJavaPlugins.onAssembly(new SingleJust&lt;T&gt;(item))
+</code></pre>
+<p>onAssembly是一个钩子函数，可以对传入数据加工后再传回，默认啥也不干</p>
+<p>SingleJust是Single的一个子类</p>
+<pre><code class="java">#SingleJust#
+@Override
+protected void subscribeActual(SingleObserver&lt;? super T&gt; observer) &#123;//核心方法 在single.subscribe时最后就会进入这里
+    observer.onSubscribe(Disposables.disposed());//结束标记，因为Single.just瞬间就会结束
+    observer.onSuccess(value);
+&#125;
+</code></pre>
+<h2 id="操作符"><a href="#操作符" class="headerlink" title="操作符"></a>操作符</h2><h3 id="map"><a href="#map" class="headerlink" title="map"></a>map</h3><pre><code class="java">.map(new Function&lt;String, String&gt;() &#123;
+    @Override
+    public String apply(@NonNull String s) throws Exception &#123;
+        return &quot;2&quot;;
+    &#125;
+&#125;)
+</code></pre>
+<p>map里传入mapper对象</p>
+<p>.map时会生成一个新的SingleMap对象传入single自己和mapper</p>
+<p>.subscribe –&gt; subscribeActual –&gt; new  MapSingleObserver&lt;T, R&gt;(t, mapper)</p>
+<p>MapSingleObserver在onSuccess时会调用 新数据 = mapper.apply(原始数据)</p>
+<p>最后SingleObserver.onSuccess(新数据)</p>
+<h2 id="Disposable"><a href="#Disposable" class="headerlink" title="Disposable"></a>Disposable</h2><p>核心问题在于如何取消的</p>
+<p>分类：</p>
+<ol>
+<li>有没有来自上游的后续任务，也就是非sigle，有多个任务，这种情况要通知上游取消任务</li>
+<li>自身是否生产任务，比如自己是最上游，或自身有延时，这种情况要取消自身任务</li>
+</ol>
+<h3 id="interval"><a href="#interval" class="headerlink" title="interval"></a>interval</h3><p>无上游有延时</p>
+<p>停止倒计时，停止向下发送事件</p>
+<pre><code class="java">#ObservableInterval#
+@Override
+public void subscribeActual(Observer&lt;? super Long&gt; observer) &#123;
+    IntervalObserver is = new IntervalObserver(observer);
+    observer.onSubscribe(is);
+
+    Scheduler sch = scheduler;//定时器
+
+    if (sch instanceof TrampolineScheduler) &#123;
+        Worker worker = sch.createWorker();//主线程会进入这里，一般不用
+        is.setResource(worker);
+        worker.schedulePeriodically(is, initialDelay, period, unit);
+    &#125; else &#123;
+        Disposable d = sch.schedulePeriodicallyDirect(is, initialDelay, period, unit);//开始计时
+        is.setResource(d);
+    &#125;
+&#125;
+</code></pre>
+<pre><code class="java">#ObservableInterval#
+  //即在内部维护了定时器，又是定时向下发送的地方，所以即实现了Disposable接口又继承AtomicReference&lt;Disposable&gt;
+static final class IntervalObserver
+extends AtomicReference&lt;Disposable&gt;
+implements Disposable, Runnable &#123;  //注意这里的实现，接口说明了自己是diposable，而继承则可以真正使用disposable的功能
+
+    private static final long serialVersionUID = 346773832286157679L;
+
+    final Observer&lt;? super Long&gt; downstream;
+
+    long count;
+
+    IntervalObserver(Observer&lt;? super Long&gt; downstream) &#123;
+        this.downstream = downstream;
+    &#125;
+
+    @Override
+    public void dispose() &#123;
+        DisposableHelper.dispose(this);//这里的this就是来自继承的AtomicReference&lt;Disposable&gt;
+    &#125;
+
+    @Override
+    public boolean isDisposed() &#123;
+        return get() == DisposableHelper.DISPOSED;
+    &#125;
+
+    @Override
+    public void run() &#123;
+        if (get() != DisposableHelper.DISPOSED) &#123;
+            downstream.onNext(count++);
+        &#125;
+    &#125;
+
+    public void setResource(Disposable d) &#123;
+        DisposableHelper.setOnce(this, d);//把IntervalObserver里的disposable设置为当前的
+    &#125;
+&#125;
+</code></pre>
+<h3 id="Single-map"><a href="#Single-map" class="headerlink" title="Single.map"></a>Single.map</h3><p>有上游无延时，直接拿上游的</p>
+<h3 id="Single-delay"><a href="#Single-delay" class="headerlink" title="Single.delay"></a>Single.delay</h3><p>有上游有延时</p>
+<pre><code class="java">#SingleDelay#
+protected void subscribeActual(final SingleObserver&lt;? super T&gt; observer) &#123;
+    final SequentialDisposable sd = new SequentialDisposable();//一个空的Disposable
+    observer.onSubscribe(sd);
+    source.subscribe(new Delay(sd, observer));
+&#125;
+</code></pre>
+<pre><code class="java">final class Delay implements SingleObserver&lt;T&gt; &#123;
+    private final SequentialDisposable sd;
+    final SingleObserver&lt;? super T&gt; downstream;
+
+    Delay(SequentialDisposable sd, SingleObserver&lt;? super T&gt; observer) &#123;
+        this.sd = sd;
+        this.downstream = observer;
+    &#125;
+
+    @Override
+    public void onSubscribe(Disposable d) &#123;
+        sd.replace(d);//把自己的Disposable替换为上游的
+    &#125;
+
+    @Override
+    public void onSuccess(final T value) &#123;
+        sd.replace(scheduler.scheduleDirect(new OnSuccess(value), time, unit));//启用计时器并置换
+    &#125;
+
+    @Override
+    public void onError(final Throwable e) &#123;
+        sd.replace(scheduler.scheduleDirect(new OnError(e), delayError ? time : 0, unit));
+    &#125;
+&#125;
+</code></pre>
+<h3 id="Observable-map"><a href="#Observable-map" class="headerlink" title="Observable.map"></a>Observable.map</h3><p>无延迟有后续</p>
+<p>MapObserver&lt;T, U&gt; extends BasicFuseableObserver&lt;T, U&gt;</p>
+<pre><code class="java">#BasicFuseableObserver
+public final void onSubscribe(Disposable d) &#123;
+    if (DisposableHelper.validate(this.upstream, d)) &#123;//对上游下游的Disposable做合规判断
+
+        this.upstream = d;//传给上游
+        if (d instanceof QueueDisposable) &#123;
+            this.qd = (QueueDisposable&lt;T&gt;)d;
+        &#125;
+
+        if (beforeDownstream()) &#123;
+
+            downstream.onSubscribe(this);//调动下游
+
+            afterDownstream();
+        &#125;
+
+    &#125;
+&#125;
+</code></pre>
+<h3 id="Observable-delay"><a href="#Observable-delay" class="headerlink" title="Observable.delay"></a>Observable.delay</h3><p>延时有下游，把自己的Disposable传给上游同时自己执行延时，然后调动下游</p>
+<h2 id="切换线程"><a href="#切换线程" class="headerlink" title="切换线程"></a>切换线程</h2><h3 id="subscribeOn"><a href="#subscribeOn" class="headerlink" title="subscribeOn"></a>subscribeOn</h3><pre><code class="java">#SingleSubscribeOn#
+protected void subscribeActual(final SingleObserver&lt;? super T&gt; observer) &#123;
+    final SubscribeOnObserver&lt;T&gt; parent = new SubscribeOnObserver&lt;T&gt;(observer, source);
+    observer.onSubscribe(parent);
+
+    Disposable f = scheduler.scheduleDirect(parent);//线程发生切换的地方，scheduler内部维护了一个线程池工具
+
+    parent.task.replace(f);
+
+&#125;
+</code></pre>
+<pre><code class="java">static final class SubscribeOnObserver&lt;T&gt;
+extends AtomicReference&lt;Disposable&gt;
+implements SingleObserver&lt;T&gt;, Disposable, Runnable &#123;
+
+    @Override
+    public void run() &#123;
+        source.subscribe(this);//这里线程就已经发生变化了，所以从这个往上所有的操作符线程都会变
+    &#125;
+&#125;
+</code></pre>
+<h3 id="observeOn"><a href="#observeOn" class="headerlink" title="observeOn"></a>observeOn</h3><p>在onSuccess的地方切换，后面的所有Observer都会变为此线程，使用mainhandler.sendMessage切换成主线程</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>原始的被观察者（Single）每经过一个操作符（map）就会生成一个新的继承于观察者的新对象（SingleMap），同时把自身传入，这个对象（SingleMap）内部会有一个subscribeActual方法，在subscribe（也就是调用链的最后）时被调用，这个方法会生成并subscribe一个内部Observer（MapSingleObserver）的对象，这个对象里有subscribe进来的observer，然后会在这个方法里用上层对象调用subscribe并重复操作知道最顶层，最顶层不会生成内部Observer，而是会直接调用onSuccess方法传递数据，然后数据经历一层层的Observer一直传输到最后。</p>
+<p>总体是一个蛇形的调用链，从上到下（生成各种被观察者实例），从下在到上（在subscribe后依次生成观察者实例）然后再从上到下（数据流）</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">炎武</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://sqbfine.top/2022/10/11/13.RxJava3/">https://sqbfine.top/2022/10/11/13.RxJava3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://sqbfine.top" target="_blank">炎武的学习笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Android%EF%BC%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">Android，源码分析</a></div><div class="post_share"><div class="social-share" data-image="/img/avatar2.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/10/11/12.Android%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%9C%BA%E5%88%B6/"><img class="prev-cover" src="/img/avatar2.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Handler</div></div></a></div><div class="next-post pull-right"><a href="/2022/10/11/14.Jetpack%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84/"><img class="next-cover" src="/img/avatar2.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Android项目架构</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/10/11/12.Android%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%9C%BA%E5%88%B6/" title="Handler"><img class="cover" src="/img/avatar2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-11</div><div class="title">Handler</div></div></a></div><div><a href="/2022/10/11/16.Activity%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/" title="Android应用启动流程（待细化）"><img class="cover" src="/img/avatar2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-11</div><div class="title">Android应用启动流程（待细化）</div></div></a></div><div><a href="/2022/10/11/19.LeakCanary/" title="LeakCanary"><img class="cover" src="/img/avatar2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-11</div><div class="title">LeakCanary</div></div></a></div><div><a href="/2022/10/11/20.RecyclerView/" title="RecyclerView（待补充源码）"><img class="cover" src="/img/avatar2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-11</div><div class="title">RecyclerView（待补充源码）</div></div></a></div><div><a href="/2022/10/11/6.Retrofit/" title="Retrofit源码"><img class="cover" src="/img/avatar2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-11</div><div class="title">Retrofit源码</div></div></a></div><div><a href="/2022/10/11/7.OkHttp%E7%BB%93%E6%9E%84/" title="OkHttp源码"><img class="cover" src="/img/avatar2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-11</div><div class="title">OkHttp源码</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">炎武</div><div class="author-info__description">Android</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/sqbfine"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/sqbfine" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:sqbfine@163.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#RxJava3"><span class="toc-number">1.</span> <span class="toc-text">RxJava3</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Single-just%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-number">1.1.</span> <span class="toc-text">Single.just的工作流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%AC%A6"><span class="toc-number">1.2.</span> <span class="toc-text">操作符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#map"><span class="toc-number">1.2.1.</span> <span class="toc-text">map</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Disposable"><span class="toc-number">1.3.</span> <span class="toc-text">Disposable</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#interval"><span class="toc-number">1.3.1.</span> <span class="toc-text">interval</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Single-map"><span class="toc-number">1.3.2.</span> <span class="toc-text">Single.map</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Single-delay"><span class="toc-number">1.3.3.</span> <span class="toc-text">Single.delay</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Observable-map"><span class="toc-number">1.3.4.</span> <span class="toc-text">Observable.map</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Observable-delay"><span class="toc-number">1.3.5.</span> <span class="toc-text">Observable.delay</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%87%E6%8D%A2%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.4.</span> <span class="toc-text">切换线程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#subscribeOn"><span class="toc-number">1.4.1.</span> <span class="toc-text">subscribeOn</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#observeOn"><span class="toc-number">1.4.2.</span> <span class="toc-text">observeOn</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.5.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By 炎武</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>炎武的学习笔记</title>
+  
+  <subtitle>莫管前路不可期,进一步自有进一步的欢喜</subtitle>
+  <link href="https://sqbfine.top/atom.xml" rel="self"/>
+  
+  <link href="https://sqbfine.top/"/>
+  <updated>2022-10-11T06:58:44.609Z</updated>
+  <id>https://sqbfine.top/</id>
+  
+  <author>
+    <name>炎武</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>性能优化大纲</title>
+    <link href="https://sqbfine.top/2022/10/11/25.%E5%B8%83%E5%B1%80%E4%BC%98%E5%8C%96/"/>
+    <id>https://sqbfine.top/2022/10/11/25.%E5%B8%83%E5%B1%80%E4%BC%98%E5%8C%96/</id>
+    <published>2022-10-11T06:58:44.609Z</published>
+    <updated>2022-10-11T06:58:44.609Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="绘制优化"><a href="#绘制优化" class="headerlink" title="绘制优化"></a>绘制优化</h2><ol><li>减少视图层级</li><li>layout</li><li>merge</li><li>ViewStub</li><li>不在onDraw里进行对象的创建或执行耗时操作，因为onDraw会被大量执行</li></ol><h2 id="内存占用优化"><a href="#内存占用优化" class="headerlink" title="内存占用优化"></a>内存占用优化</h2><ol><li>使用内存有好的数据结构，比如sparesearray，arraymap</li><li>避免内存泄漏</li><li>使用池结构和缓存，避免重复创建对象</li><li>根据手机内存大小设置内存缓存</li><li>多进程可以扩大使用内存</li><li>监听componentCallback2的onLowMemory及时释放内存</li><li>及时关闭资源，比如流，数据库</li></ol><h2 id="内存泄漏优化"><a href="#内存泄漏优化" class="headerlink" title="内存泄漏优化"></a>内存泄漏优化</h2><ol><li>静态变量：比如静态变量持有activity</li><li>单例模式：单例模式下的对象是静态的，如果把activity注册进来，比如需要回调的情况，会长期持有</li><li>属性动画，如果activity内动画一直播放，animator实例一直在持有view</li><li>静态内部类，比如handler</li><li>使用软引用</li><li>webview要及时destroy</li></ol><h2 id="响应速度优化"><a href="#响应速度优化" class="headerlink" title="响应速度优化"></a>响应速度优化</h2><p>核心思想就是避免在主线程中做耗时操作</p><p>懒加载</p><ol><li>两个方法公用一个锁，一个先在子线程调用并进行耗时操作，另一个在主线程后调用，这时候主线程就会等待锁释放，造成anr</li></ol><h2 id="RecycleView优化"><a href="#RecycleView优化" class="headerlink" title="RecycleView优化"></a>RecycleView优化</h2><h2 id="Bitmap优化"><a href="#Bitmap优化" class="headerlink" title="Bitmap优化"></a>Bitmap优化</h2><h2 id="线程优化"><a href="#线程优化" class="headerlink" title="线程优化"></a>线程优化</h2><p>使用线程池</p><h2 id="启动优化"><a href="#启动优化" class="headerlink" title="启动优化"></a>启动优化</h2><p> <strong>Application</strong>、<strong>Activity</strong> 创建以及回调等过程</p><p>谷歌官方给的建议是:</p><p>1、利用提前展示出来的 Window，快速展示出来一个界面，给用户快速反馈的体验;</p><p>2、避免在启动时做密集沉重的初始化(Heavy app initialization); </p><p>3、避免 I/O 操作、反序列化、网络操作、布局嵌套等。</p><h2 id="包体积优化"><a href="#包体积优化" class="headerlink" title="包体积优化"></a>包体积优化</h2><ol><li>代码混淆 复用 开启资源压缩</li><li>插件化 </li><li>资源优化 使用webp使用矢量图</li></ol><h2 id="耗电优化"><a href="#耗电优化" class="headerlink" title="耗电优化"></a>耗电优化</h2><p>1.减少 你的应用程序可以删除冗余操作吗?例如，它是否可以缓存下载的数据而 不是重复唤醒无线电以重新下载数据?</p><p>2.推迟 应用是否需要立即执行操作?例如，它可以等到设备充电才能将数据备份 到云端吗?</p><p>3.合并 可以批处理工作，而不是多次将设备置于活动状态吗?例如，几十个应用 程序是否真的有必要在不同时间打开收音机发送邮件?在一次唤醒收音机期间， 是否可以传输消息?</p><h2 id="弱网优化"><a href="#弱网优化" class="headerlink" title="弱网优化"></a>弱网优化</h2><ol><li>减少数据请求频率</li><li>减小数据包体积</li><li>缓存</li><li>不加载图片</li><li>界面先反馈，找时机提交数据，比如点赞操作</li></ol><h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ol><li>避免大量创建对象</li><li>避免过多使用枚举</li><li>常量 static final</li><li>使用sparsearray和pair等android特有数据结构</li><li>使用缓存</li></ol>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;绘制优化&quot;&gt;&lt;a href=&quot;#绘制优化&quot; class=&quot;headerlink&quot; title=&quot;绘制优化&quot;&gt;&lt;/a&gt;绘制优化&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;减少视图层级&lt;/li&gt;
+&lt;li&gt;layout&lt;/li&gt;
+&lt;li&gt;merge&lt;/li&gt;
+&lt;li&gt;ViewStub&lt;</summary>
+      
+    
+    
+    
+    <category term="Android" scheme="https://sqbfine.top/categories/Android/"/>
+    
+    
+    <category term="Android，性能优化" scheme="https://sqbfine.top/tags/Android%EF%BC%8C%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ANR</title>
+    <link href="https://sqbfine.top/2022/10/11/21.ANR/"/>
+    <id>https://sqbfine.top/2022/10/11/21.ANR/</id>
+    <published>2022-10-11T06:58:44.609Z</published>
+    <updated>2022-10-11T06:58:44.609Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="ANR"><a href="#ANR" class="headerlink" title="ANR"></a>ANR</h1><p>/data/anr/traces.txt</p><h2 id="ANR触发类型"><a href="#ANR触发类型" class="headerlink" title="ANR触发类型"></a>ANR触发类型</h2><ol><li>service 前台服务20秒内未执行完成</li><li>BroadcastQueue 前台广播10s，后台60s</li><li>ContentProvider 内容提供者在publish时超过10s</li><li>InputDispathcing 输入时间分发超时5s</li></ol><h2 id="触发流程"><a href="#触发流程" class="headerlink" title="触发流程"></a>触发流程</h2><p>在Service创建时</p><p>ActiveServices.realStartServiceLocked中再通知AMS创建服务时会发送一个延时10s的消息</p><p>ActivityThread.handleCreateService中在onCreate执行时会把消息取消，如果超过10s没有取消，ActiveServices会收到消息，会直接调动anr相关方法截取日志并记录</p><h2 id="input超时机制"><a href="#input超时机制" class="headerlink" title="input超时机制"></a>input超时机制</h2><ul><li>InputReader线程负责通过EventHub(监听目录/dev/input)读取输入事件，一旦监听到输入事件则放入到InputDispatcher的mInBoundQueue队列，并通知其处理该事件；</li><li>InputDispatcher线程负责将接收到的输入事件分发给目标应用窗口，分发过程使用到3个事件队列：<ul><li>mInBoundQueue用于记录InputReader发送过来的输入事件；</li><li>outBoundQueue用于记录即将分发给目标应用窗口的输入事件；</li><li>waitQueue用于记录已分发给目标应用，且应用尚未处理完成的输入事件；</li></ul></li></ul><p>input的超时机制并非时间到了一定就会爆炸，而是处理后续上报事件的过程才会去检测是否该爆炸，所以更像是扫雷的过程</p><h2 id="线上解决方案"><a href="#线上解决方案" class="headerlink" title="线上解决方案"></a>线上解决方案</h2><h3 id="抓取系统traces-txt-上传"><a href="#抓取系统traces-txt-上传" class="headerlink" title="抓取系统traces.txt 上传"></a>抓取系统traces.txt 上传</h3><p>1、traces.txt 里面包含所有线程的信息，上传之后需要人工过滤分析<br>2、很多高版本系统需要root权限才能读取 /data/anr这个目录</p><h3 id="ANRWatchDog"><a href="#ANRWatchDog" class="headerlink" title="ANRWatchDog"></a>ANRWatchDog</h3><p>开启一个线程，死循环，循环中睡眠5s</p><p>往UI线程post 一个Runnable，将_tick 赋值为0，将 _reported 赋值为false</p><p>线程睡眠5s之后检查_tick和_reported字段是否被修改</p><p>如果_tick和_reported没有被修改，说明给主线程post的Runnable一直没有被执行，也就说明主线程卡顿至少5s<strong>（只能说至少，这里存在5s内的误差）</strong>。</p><p>将线程堆栈信息输出</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;ANR&quot;&gt;&lt;a href=&quot;#ANR&quot; class=&quot;headerlink&quot; title=&quot;ANR&quot;&gt;&lt;/a&gt;ANR&lt;/h1&gt;&lt;p&gt;/data/anr/traces.txt&lt;/p&gt;
+&lt;h2 id=&quot;ANR触发类型&quot;&gt;&lt;a href=&quot;#ANR触发类型&quot; class</summary>
+      
+    
+    
+    
+    <category term="Android" scheme="https://sqbfine.top/categories/Android/"/>
+    
+    
+    <category term="Android，Framework，性能优化" scheme="https://sqbfine.top/tags/Android%EF%BC%8CFramework%EF%BC%8C%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JVM、Runtime、字节码与垃圾回收</title>
+    <link href="https://sqbfine.top/2022/10/11/17.%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3JVM/"/>
+    <id>https://sqbfine.top/2022/10/11/17.%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3JVM/</id>
+    <published>2022-10-11T06:58:44.609Z</published>
+    <updated>2022-10-11T06:58:44.609Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Java-Vitrual-Machine"><a href="#Java-Vitrual-Machine" class="headerlink" title="Java Vitrual Machine"></a>Java Vitrual Machine</h1><h2 id="Class"><a href="#Class" class="headerlink" title="Class"></a>Class</h2><p>实际上是二进制内容，包含了java中的所有信息</p><h3 id="类文件文件格式"><a href="#类文件文件格式" class="headerlink" title="类文件文件格式"></a>类文件文件格式</h3><ol><li>文件头magic u4(4个字节) 表明了不同文件格式</li><li>次版本号 u2</li><li>主版本号 u2</li><li>常量池 元素数量 u2</li><li>常量池 *</li><li>访问标志 u2 （super public等）</li><li>……</li></ol><p>无分隔符式的文件结构，可以确定长度的用指定长度字节，比如版本号固定两个字节，不能确定的先有一个八位字节（一个int值）表示后面数据的长度，然后再写具体数据，比如名字</p><h2 id="反编译字节码"><a href="#反编译字节码" class="headerlink" title="反编译字节码"></a>反编译字节码</h2><p>javap</p><p>javap -c </p><p>Javap -v</p><h3 id="方法的字节码"><a href="#方法的字节码" class="headerlink" title="方法的字节码"></a>方法的字节码</h3><p>stack操作数栈，表明操作需要几个栈，比如1+1就要两个存放两个1，当+的时候两个1出栈一个2入栈 </p><p>lacals本地变量表大小，存放计算过程中的临时结果</p><p>args_size传入 参数表，非静态变量会有一个默认的this</p><p>指令，每一个指令都占一个字节，前面有一个数字，记录了指令的程序偏移量，这个会被程序计数器记录，走if之类的会用到</p><h2 id="JAVA的一些应用"><a href="#JAVA的一些应用" class="headerlink" title="JAVA的一些应用"></a>JAVA的一些应用</h2><h3 id="a-i-与a-i"><a href="#a-i-与a-i" class="headerlink" title="a = i++与a = ++i"></a>a = i++与a = ++i</h3><p>i++是先把本地变量表中的i拿到操作栈中，然后对<strong>本地变量表</strong>中的i+1，然后把<strong>操作栈中</strong>的数出栈赋给本地变量表中的a</p><p>++i是先对<strong>本地变量表</strong>中的i+1，然后拿到操作栈，然后把<strong>操作栈</strong>中的值给a</p><h3 id="内部类持有外部类引用"><a href="#内部类持有外部类引用" class="headerlink" title="内部类持有外部类引用"></a>内部类持有外部类引用</h3><pre><code class="java">public class Hello &#123;    void main() &#123;        new Inner();    &#125;    class Inner &#123;        &#125;&#125;</code></pre><p>在字节码中 Inner会持有一个Hello的成员并且够造方法里也有Inner参数，然后再构造方法里会把Inner赋值</p><p>kotlin对此做了优化，当内部没有使用到this的时候，不会持有外部类引用</p><h3 id="泛型擦除"><a href="#泛型擦除" class="headerlink" title="泛型擦除"></a>泛型擦除</h3><p>List<String> List<Integer> 在编译时都是List括号内的被擦除了，所以会被认为是相同的，但括号内的内容会被保存在Signature</p><h3 id="sychronized"><a href="#sychronized" class="headerlink" title="sychronized"></a>sychronized</h3><p>monitorenter </p><p>monitorexit 这个有两次，因为怕方法内异常终止，所以再次调用确认结束锁</p><h2 id="JVM运行时数据区-Runtime-Data-Area"><a href="#JVM运行时数据区-Runtime-Data-Area" class="headerlink" title="JVM运行时数据区 Runtime Data Area"></a>JVM运行时数据区 Runtime Data Area</h2><h3 id="heap堆"><a href="#heap堆" class="headerlink" title="heap堆"></a>heap堆</h3><p>存放对象 gc发生的地方 内存最大的地方</p><h3 id="method-area方法区"><a href="#method-area方法区" class="headerlink" title="method area方法区"></a>method area方法区</h3><p>记录被jvm加载进来的class数据，包含字段、方法、构造器、以及各种操作</p><p>常量池也在这里</p><h3 id="Java-stacks-java栈"><a href="#Java-stacks-java栈" class="headerlink" title="Java stacks java栈"></a>Java stacks java栈</h3><p>存放栈帧的地方，执行方法时会进行入栈出栈操作</p><p>线程创建时创建，线程里同时还有程序计数器（记录方法执行到哪一行，操作符前的用的是偏移量）</p><h3 id="native-method-stacks-本地方法栈"><a href="#native-method-stacks-本地方法栈" class="headerlink" title="native method stacks 本地方法栈"></a>native method stacks 本地方法栈</h3><p>线程创建时创建</p><h3 id="程序计数器-pc-registers"><a href="#程序计数器-pc-registers" class="headerlink" title="程序计数器 pc registers"></a>程序计数器 pc registers</h3><p>记录代码（字节码中）的执行位置，使用的时偏移量，也就是正在执行的字节码指令的地址，如果是native方法，这里不会有值</p><h2 id="执行一个方法时运行时数据区的具体情况"><a href="#执行一个方法时运行时数据区的具体情况" class="headerlink" title="执行一个方法时运行时数据区的具体情况"></a>执行一个方法时运行时数据区的具体情况</h2><pre><code class="java">public class Hellow &#123;    public static void main(String[] args) &#123;        Hellow hellow = new Hellow();        hellow.greeting()    &#125;        public void greeting() &#123;     System.out.printlin(&quot;Hellow&quot;)    &#125;&#125;</code></pre><pre><code>#字节码public static void main() descriptor: ···flags: ···Code:    stack=2, locals=2, args_size=1        0:new        3:dup        4:invokespecial        7:astore_1        8:aload_1        9:invokevirtual        12:return</code></pre><ol><li>虚拟机启动时，heap和method area就已经创建</li><li>线程创建后， java栈 native栈和程序计数器创建</li><li>执行main方法时，先把通过classloader类加载器把类加载到method area</li><li>调用方法，创建栈帧压入虚拟机的Java stacks，一个栈帧由三部分组成：<strong>locals 本地变量表，stacks 操作数栈，frame data 负责动</strong>态链接以及方法出现异常和方法返回操作，动态链接就是根据字节码中的引用去寻址</li><li>执行new，去堆上创建对象并把引用给到操作数栈，此时仅仅是创建了对象，并未初始化</li><li>执行dup，复制操作数栈里的值并压入操作数栈，此时操作数栈中有两个引用，并且程序计数器标记为3</li><li>执行invokespecial，执行对象初始化操作，调用对象的构造方法，这时操作数栈会出栈一个引用，创建一个新的栈帧入栈，把之前出栈的引用给新的栈帧，这个栈帧在完成初始化后出栈，此时对象初始化完成</li><li>执行astore_1，把操作数栈的对象赋值给本地变量表1号位,这里就完成了<code>Hellow hellow = new Hellow();</code></li><li>执行aload_1，把本地变量一号位加载到操作数栈</li><li>执行invokevirtual，传入对象引用，调用另一个方法</li><li>另一个方法入栈、执行、出栈，然后此方法也return出栈</li></ol><h2 id="Java对象在堆中的结构"><a href="#Java对象在堆中的结构" class="headerlink" title="Java对象在堆中的结构"></a>Java对象在堆中的结构</h2><h3 id="组成："><a href="#组成：" class="headerlink" title="组成："></a>组成：</h3><h3 id="对象头"><a href="#对象头" class="headerlink" title="对象头"></a>对象头</h3><p>如果对象非数组：</p><ul><li>markword，会根据对象锁的状态不同而变化 在32位系统里有32位</li></ul><ol><li>最后三位0 01：无锁，前25位是hashcode，中间4位是age（gc年龄）</li><li>最后三位1 01：偏向锁，此时指只有一个线程会访问锁，这时会记录线程的id方便访问，前23记录线程id，2位记录偏向锁时间戳，4位记录age，如果记录的id与正在访问的线程id一致则直接获取锁，如果不是则尝试替换threadid，如果失败就升级位轻量级锁</li><li>后两位是10：重量级锁，30位记录锁的指针（pointer to heavyweight monitor ），hashcode在指针内部，多线程进入后竞争锁，失败进入阻塞状态</li><li>后两位00：轻量级锁，30位记录指针，竞争失败后会继续尝试获取锁，也叫自旋锁，自选次数有限，达到此书后锁会升级位重量级锁</li><li>后两位11：标记为gc</li></ol><p>值得注意：无锁状态下hashcode被调用后才会生成，偏向锁是没有hashcode的，在偏向锁状态下调用hashcode会直接升级为重量级锁</p><ul><li>类型指针，对象的引用出自这里</li></ul><p>是数组</p><p>多一个数组长度区域</p><h3 id="具体数据"><a href="#具体数据" class="headerlink" title="具体数据"></a>具体数据</h3><p>代码中的具体数据，比如成员变量等</p><h3 id="对齐填充"><a href="#对齐填充" class="headerlink" title="对齐填充"></a>对齐填充</h3><p>确保对象大小为8的倍数</p><h2 id="JVM垃圾回收"><a href="#JVM垃圾回收" class="headerlink" title="JVM垃圾回收"></a>JVM垃圾回收</h2><p>发生在heap中</p><p>判断对象是否能被jcroot直接或间接引用到</p><h3 id="标记清除法-mark-and-sweep"><a href="#标记清除法-mark-and-sweep" class="headerlink" title="标记清除法 mark and sweep"></a>标记清除法 mark and sweep</h3><p>gc时root对可以访问的对象进行标记，全部标记后会对没有标记的对象进行回收</p><p>但会产生内存碎片</p><h3 id="标记整理法-mark-compact"><a href="#标记整理法-mark-compact" class="headerlink" title="标记整理法 mark compact"></a>标记整理法 mark compact</h3><p>把标记后的对象直接向一端移动，然后再回收</p><p>但效率不高</p><h3 id="复制-Copying"><a href="#复制-Copying" class="headerlink" title="复制 Copying"></a>复制 Copying</h3><p>内存直接一分为2，把标记对象直接复制向备用区域，然后另一半直接全回收</p><h3 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h3><p>内存区域分为新生代young和老生代old</p><h4 id="young"><a href="#young" class="headerlink" title="young"></a>young</h4><p>eden survivor(to) survivor(from) 8：1：1</p><p>当对象创建后进入eden，eden满了会进行minor GC，将存活对象年龄+1并复制放入from，把eden清空</p><p>第二次eden又满了，再次minorGC，把eden对象和from对象年龄+1，复制进入to区，清空eden和from，然后from和to名字互换，下一次minorGC再重复</p><h4 id="old"><a href="#old" class="headerlink" title="old"></a>old</h4><p>当对象age达到一定数字会进入old</p><p>如果minorGC时to区域无法容纳所有存活对象，会进入old</p><p>比较大的对象，为了减小复制消耗，会进入old</p><p>问题：跨代引用——old里有一个map引用了一个young里的object，这样会造成混淆</p><p>card-table：把old区分块，有跨代引用的和没有的分开，这样GC时就不需要扫描所有old区</p><p>fullGC时，old中通过标记整理法进行回收，因为old中变更频率低</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;Java-Vitrual-Machine&quot;&gt;&lt;a href=&quot;#Java-Vitrual-Machine&quot; class=&quot;headerlink&quot; title=&quot;Java Vitrual Machine&quot;&gt;&lt;/a&gt;Java Vitrual Machine&lt;/h1&gt;&lt;</summary>
+      
+    
+    
+    
+    <category term="Java" scheme="https://sqbfine.top/categories/Java/"/>
+    
+    
+    <category term="Java，JVM" scheme="https://sqbfine.top/tags/Java%EF%BC%8CJVM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>垃圾回收机制（待合并）</title>
+    <link href="https://sqbfine.top/2022/10/11/18.%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/"/>
+    <id>https://sqbfine.top/2022/10/11/18.%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/</id>
+    <published>2022-10-11T06:58:44.609Z</published>
+    <updated>2022-10-11T06:58:44.609Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="GC"><a href="#GC" class="headerlink" title="GC"></a>GC</h1><h2 id="引用计数法"><a href="#引用计数法" class="headerlink" title="引用计数法"></a>引用计数法</h2><p>python oc</p><p>有循环引用的问题</p><h2 id="可达性分析法"><a href="#可达性分析法" class="headerlink" title="可达性分析法"></a>可达性分析法</h2><p>GC Root</p><p>首先就是要找标记，找到可以作为GC Root的对象：</p><ul><li>虚拟机栈中正在引用的对象</li><li>本地方法栈中正在引用的对象</li><li>静态属性引用的对象</li><li>方法区常量引用的对象</li></ul><p>内存泄漏，短生命周期对象被长生命周期对象持有，导致短命无法被 正确回收</p><p>一个对象被回收时会调用finalize方法</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;GC&quot;&gt;&lt;a href=&quot;#GC&quot; class=&quot;headerlink&quot; title=&quot;GC&quot;&gt;&lt;/a&gt;GC&lt;/h1&gt;&lt;h2 id=&quot;引用计数法&quot;&gt;&lt;a href=&quot;#引用计数法&quot; class=&quot;headerlink&quot; title=&quot;引用计数法&quot;&gt;&lt;/a&gt;引用计数</summary>
+      
+    
+    
+    
+    <category term="Java" scheme="https://sqbfine.top/categories/Java/"/>
+    
+    
+    <category term="Java，GC" scheme="https://sqbfine.top/tags/Java%EF%BC%8CGC/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>LeakCanary</title>
+    <link href="https://sqbfine.top/2022/10/11/19.LeakCanary/"/>
+    <id>https://sqbfine.top/2022/10/11/19.LeakCanary/</id>
+    <published>2022-10-11T06:58:44.609Z</published>
+    <updated>2022-10-11T06:58:44.609Z</updated>
+    
+    <content type="html"><![CDATA[<p>普通的观测内存泄漏：主动调用runtime.gc，然后看finalized是否被调用</p><h2 id="如何观察到所有Activity的onDestory"><a href="#如何观察到所有Activity的onDestory" class="headerlink" title="如何观察到所有Activity的onDestory"></a>如何观察到所有Activity的onDestory</h2><p>通过在application中注册registerActivityLifeCycleCallbacks()获取activity的生命周期</p><p>通过注册Activity的LifeCycle，监测到activity的onDestroy状态，在这时RefWatcher.watch(activity)</p><p>fragment：activity.getFragmentManager.registerFragmentLifeCycleCallbacks</p><h2 id="如何判断Activity泄漏了"><a href="#如何判断Activity泄漏了" class="headerlink" title="如何判断Activity泄漏了"></a>如何判断Activity泄漏了</h2><p>记录onDestory的时间点</p><p>生成一个uuid作为key</p><p>把key加入集合，这个集合就是观察名单</p><p>创建包装类KeyedWeakRefrence把key和activity放入，这是一个弱引用</p><p>弱引用：如果弱引用包裹的对象只在弱引用中被引用，gc时会直接回收</p><p>软引用：比弱引用更强一点，在接近oom时才会被回收，但在Android中，只要gc就会被回收</p><p>虚引用：get永远为null，参数里有ReferenceQueue，在gc前会把回收的对象添加进这个queue，用来判断对象是否被回收，比finalize可靠</p><p>创建excuter执行检测方法</p><p>excuter判断当前是否在主线程，如果是Looper.myQueue.addIdleHandler，这个会在主线程空闲时间执行，执行了说明生命周期正常执行完毕</p><p>然后切换子线程执行检测方法ensureGone</p><p>对弱引用对象的ReferenceQueue进行轮询取出并对比是否有传入的弱引用对象，如果有，说明已经正确的回收了，把key从集合中移除</p><p>如果轮询完怀疑名单中还有对象，主动gc，再次进行上一步</p><pre><code class="java">Runtime.getRuntime.gctry&#123;    Thread.sleep(100)&#125; catch (InterreptedException e) &#123;    throw new AssertionError()&#125;System.runFinalization()</code></pre><p>如果还是不成功把收集heap信息组成HeapDump对象进行分析</p><h2 id="如何收集分析内存泄漏信息"><a href="#如何收集分析内存泄漏信息" class="headerlink" title="如何收集分析内存泄漏信息"></a>如何收集分析内存泄漏信息</h2><p>如何收集heap信息：Debug.dumpHprofData</p><p>开启服务进行处理</p><p>如何分析：使用IntentService，从堆中找到弱引用的对象，通过key判断</p><p>找到对象的引用路径，通过第三方库：haha</p><h2 id="2-0变化"><a href="#2-0变化" class="headerlink" title="2.0变化"></a>2.0变化</h2><p>初始化操作没有了，放在了provider里</p><p>支持androidx下的fragment</p><p>支持rootview和service检测</p><h3 id="rootview："><a href="#rootview：" class="headerlink" title="rootview："></a>rootview：</h3><p>如何获取：引入第三方库Curtains，原理是反射WindowManagerGlobal</p><p>如何检测：rootView.addOnAttachStateChangeListener</p><h3 id="service："><a href="#service：" class="headerlink" title="service："></a>service：</h3><p>如何获取：反射ActivityThread替换Handler得到service销毁的消息</p><p>在1.0中Looper.myQueue.addIdleHandler的地方改为延迟5s</p><p>分析堆内存自己写了没用haha</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;普通的观测内存泄漏：主动调用runtime.gc，然后看finalized是否被调用&lt;/p&gt;
+&lt;h2 id=&quot;如何观察到所有Activity的onDestory&quot;&gt;&lt;a href=&quot;#如何观察到所有Activity的onDestory&quot; class=&quot;headerlink&quot;</summary>
+      
+    
+    
+    
+    <category term="Android" scheme="https://sqbfine.top/categories/Android/"/>
+    
+    
+    <category term="Android，源码分析" scheme="https://sqbfine.top/tags/Android%EF%BC%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>加密、签名、编解码与序列化</title>
+    <link href="https://sqbfine.top/2022/10/11/2.%E7%BC%96%E7%A0%81%E5%8A%A0%E5%AF%86hash%E5%BA%8F%E5%88%97%E5%8C%96/"/>
+    <id>https://sqbfine.top/2022/10/11/2.%E7%BC%96%E7%A0%81%E5%8A%A0%E5%AF%86hash%E5%BA%8F%E5%88%97%E5%8C%96/</id>
+    <published>2022-10-11T06:58:44.609Z</published>
+    <updated>2022-10-11T06:58:44.609Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="编码解码"><a href="#编码解码" class="headerlink" title="编码解码"></a>编码解码</h2><h4 id="Base64"><a href="#Base64" class="headerlink" title="Base64"></a>Base64</h4><p>二进制数据转为64个字符组成的字符串的算法</p><p>二进制：广义为任何计算机数据，狭义为非文本数据，如文件，图片等</p><p>传图片，会增大三分之一</p><p>Base58，比特币用，去掉了码表里的一些符号，方便手抄与复制</p><p>URL encoding</p><p>url中的保留字符用%替代，消除歧义，避免解析错误</p><h2 id="加密解密"><a href="#加密解密" class="headerlink" title="加密解密"></a>加密解密</h2><h4 id="对称加密"><a href="#对称加密" class="headerlink" title="对称加密"></a>对称加密</h4><p>AES 64位秘钥 DES 128位秘钥 加密解密算法不同</p><h4 id="非对称加密"><a href="#非对称加密" class="headerlink" title="非对称加密"></a>非对称加密</h4><p>RSA 可以加密和签名 DSA 只用于签名，速度快</p><p>公钥加密 私钥解密 加密解密算法相同 110 554 110</p><p>私钥加密的话，公钥也可以解密</p><p>公钥一般是通过私钥计算出来，所以不能暴露私钥进行加密</p><p>椭圆曲线算法</p><h2 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h2><p>原数据 -私钥签名-&gt; 签名数据 -公钥验证-&gt; 原数据</p><p>私钥就像一个印章，公钥验证完成后，首先得到了原数据相当于文件，而验证的过程就相当于文件上的印章</p><p>实际使用过程中，每次都要解密太麻烦，所以会一同发送原数据与签名数据，方便比对</p><h2 id="压缩与解压缩"><a href="#压缩与解压缩" class="headerlink" title="压缩与解压缩"></a>压缩与解压缩</h2><p>压缩：把数据换一种形式来存储，以节省控件</p><p>解压缩：还原</p><p>压缩算法：DEFLATE JPEG MP3</p><p>压缩也算编码，比较宽泛的问题</p><p>有损压缩因为不可逆，所以不太算编码</p><h2 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h2><p>把内存中的对象（一般是内存中的，例如jvm中的对象）转换成字节序列的过程</p><p>因为数据在内存中不存在格式，所以不算编码</p><h2 id="哈希"><a href="#哈希" class="headerlink" title="哈希"></a>哈希</h2><p>定义：把任意数据转换成指定大小范围的数据（通常很小）</p><p>作用：摘要，数字指纹</p><p>经典算法：MD5，SHA1，SHA256</p><p>实际用途：</p><ul><li>数据完整性校验</li><li>快速查找：hashCode和hashMap存储对象时比对的是hashCode，这样效率高</li><li>隐私保护</li></ul><p> 不算加密也不算编码</p><p>运用在签名与验证流程中，会把原数据做hash处理，变成摘要，然后进行签名，大大减小数据量</p><h2 id="字符集"><a href="#字符集" class="headerlink" title="字符集"></a>字符集</h2>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;编码解码&quot;&gt;&lt;a href=&quot;#编码解码&quot; class=&quot;headerlink&quot; title=&quot;编码解码&quot;&gt;&lt;/a&gt;编码解码&lt;/h2&gt;&lt;h4 id=&quot;Base64&quot;&gt;&lt;a href=&quot;#Base64&quot; class=&quot;headerlink&quot; title=&quot;Base6</summary>
+      
+    
+    
+    
+    <category term="安全" scheme="https://sqbfine.top/categories/%E5%AE%89%E5%85%A8/"/>
+    
+    
+    <category term="安全" scheme="https://sqbfine.top/tags/%E5%AE%89%E5%85%A8/"/>
+    
+    <category term="加密" scheme="https://sqbfine.top/tags/%E5%8A%A0%E5%AF%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>RecyclerView（待补充源码）</title>
+    <link href="https://sqbfine.top/2022/10/11/20.RecyclerView/"/>
+    <id>https://sqbfine.top/2022/10/11/20.RecyclerView/</id>
+    <published>2022-10-11T06:58:44.609Z</published>
+    <updated>2022-10-11T06:58:44.609Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="RecyclerView"><a href="#RecyclerView" class="headerlink" title="RecyclerView"></a>RecyclerView</h1><h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><ol><li>View</li><li>Adapter 负责将数据转化为itemview</li><li>LayoutManager 负责测量摆放itemview与触摸反馈</li></ol><p>RecyclerView.onMeasure() –&gt; LayoutManager.onMeasure()</p><p>RecyclerView.onLayout()</p><p>​    –&gt; dispatchLayout()</p><p>​        –&gt; dispatchLayoutStep2()</p><p>​            –&gt;LayoutManager.onLayoutChildren()</p><h2 id="对比ListView"><a href="#对比ListView" class="headerlink" title="对比ListView"></a>对比ListView</h2><h3 id="Adapter"><a href="#Adapter" class="headerlink" title="Adapter"></a>Adapter</h3><p>ListView中复用的是View</p><p>RecyclerView复用的是ViewHolder</p><h3 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h3><p>ListView两级缓存</p><p>RecyclerView四级缓存</p><h3 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h3><p>ListView动画实现比较麻烦，无法具体得知某个item的改变，也就是无法局部刷新</p><p>ItemAnimator</p><h3 id="ItemDecoration"><a href="#ItemDecoration" class="headerlink" title="ItemDecoration"></a>ItemDecoration</h3><p>绘制分割线或者滚动条之类的元素</p><h2 id="运行机制"><a href="#运行机制" class="headerlink" title="运行机制"></a>运行机制</h2><p>RecyclerView –&gt; LayoutManager –&gt; Recyler –&gt;Adapter.onCreateViewHolder() 或onBindViewHolder()产生ViewHolder返回Recycler，Recycler再取出View给LayoutManager</p><h2 id="ListView复用机制"><a href="#ListView复用机制" class="headerlink" title="ListView复用机制"></a>ListView复用机制</h2><h3 id="复用池"><a href="#复用池" class="headerlink" title="复用池"></a>复用池</h3><p><code>View[] mActiveViews = new View[0]</code> 界面上的view没有发生变化时用到，元素会直接复用，不用重新绑数据，比如外部requestLayout，比如早版本sdk在第一次绘制时会触发多次requestLayout</p><p><code>ArrayList&lt;View&gt;[] = mScrapViews</code> 一个ArrayList数组，每一个ArrayList代表一种ViewType在回收池中的一组View，ViewType就是数组索引，所以ListView的ViewType是连续的int值，需要重新绑数据</p><h3 id="notifyDataSetChanged"><a href="#notifyDataSetChanged" class="headerlink" title="notifyDataSetChanged()"></a>notifyDataSetChanged()</h3><p>会把当前界面所有view取出放入mScrapViews，然后取出重新绑定</p><h3 id="滑动"><a href="#滑动" class="headerlink" title="滑动"></a>滑动</h3><p>滑出的item会把view放入mScrapViews</p><p>进入的item会取出，也就是getView中的convertView，如果没有就创建新VIew</p><h2 id="RecyclerView的缓存"><a href="#RecyclerView的缓存" class="headerlink" title="RecyclerView的缓存"></a>RecyclerView的缓存</h2><h3 id="Recycler"><a href="#Recycler" class="headerlink" title="Recycler"></a>Recycler</h3><h4 id="ArrayList-mCacheViews"><a href="#ArrayList-mCacheViews" class="headerlink" title="ArrayList mCacheViews"></a>ArrayList<ViewHolder> mCacheViews</h4><p>类似mActiveViews，默认最多放两个ViewHolder，作用场景是，向上滑两个item出去，再向下滑两个，此时数据没有变动，可以直接命中mCacheViews中刚缓存的view，直接用，不会走onbindviewholder</p><p>mViewCacheMax设置mCacheViews容积</p><h4 id="RecyclerViewPool"><a href="#RecyclerViewPool" class="headerlink" title="RecyclerViewPool"></a>RecyclerViewPool</h4><pre><code>#RecyclerViewPoolprivate static final int DEFAULT_MAX_SCRAP = 5 // mScrapHeap中元素最大值，如果itemtype种类少可以设置多点，反之少点SparseArray&lt;ScrapData&gt; mScrap // 这种设置itemtype就不需要是连续的int值了class ScrapData &#123;    ArrayList&lt;ViewHolder&gt; mScrapHeap&#125;</code></pre><p>一直向下滑多于三个item回收，mCacheViews中就会去一个给mScrap，然后加入最新的</p><p>向上滑回来，先看mCacheViews，在看mScrap，都不需要重新绑定数据</p><h5 id="notifyDataSetChange-进行全局刷新时："><a href="#notifyDataSetChange-进行全局刷新时：" class="headerlink" title="notifyDataSetChange()进行全局刷新时："></a>notifyDataSetChange()进行全局刷新时：</h5><p>直接刷新所有item，会导致所有item进入回收池，不走mCacheViews直接RecyclerViewPool</p><h4 id="notifyItemChanged进行局部刷新时："><a href="#notifyItemChanged进行局部刷新时：" class="headerlink" title="notifyItemChanged进行局部刷新时："></a>notifyItemChanged进行局部刷新时：</h4><h4 id="mAttachedScrap"><a href="#mAttachedScrap" class="headerlink" title="mAttachedScrap"></a>mAttachedScrap</h4><p>ArrayList<ViewHolder>，没有发生改变的的viewholder暂存区，在一次布局中，所有没有发生改变的的viewholder都会进入这里暂存，然后布局时，layoutmanager从这里取，取完还有剩余则放入pool，如果不够从pool里拿</p><h4 id="mChangeScrap"><a href="#mChangeScrap" class="headerlink" title="mChangeScrap"></a>mChangeScrap</h4><p>ArrayList<ViewHolder>，发生改变的的viewholder暂存区</p><h3 id="RecyclerView核心机制"><a href="#RecyclerView核心机制" class="headerlink" title="RecyclerView核心机制"></a>RecyclerView核心机制</h3><p>pre/post-layout：当RecyclerView发生changed相关调用，比如删除或增加layout，会有一个动画，是通过预测性动画来实现的，changed发生是，RecyclerView会同时进行两个layout布局，一个是改变前，一个是改变后，通过对比来确定动画的起始和终止点。</p><p>比较特别的是，当某个item是change，此时这个item需要两个ViewHolder，一个老数据的holder渐隐动画，一个新数据的holder做出场动画。这样可以处理整个item的view都改变的情况。这个机制也导致了即使局部数据改变，change某个item时，依然会有闪烁动画。（可以通过关闭动画避免，或者调用notifyItemChanged(position, “payload”)进行局部刷新，不走预测性动画）</p><p>这时候mChangeScrap内存着的就是pre-layout中的layout</p><p>当进行pre-layout时，layout从mAttachedScrap和mChangeScrap中获取，而post-layout从pool和cache中获取</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;RecyclerView&quot;&gt;&lt;a href=&quot;#RecyclerView&quot; class=&quot;headerlink&quot; title=&quot;RecyclerView&quot;&gt;&lt;/a&gt;RecyclerView&lt;/h1&gt;&lt;h2 id=&quot;结构&quot;&gt;&lt;a href=&quot;#结构&quot; class=&quot;</summary>
+      
+    
+    
+    
+    <category term="Android" scheme="https://sqbfine.top/categories/Android/"/>
+    
+    
+    <category term="Android，源码分析" scheme="https://sqbfine.top/tags/Android%EF%BC%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>BlockCanary检测卡顿（待补充蓝师傅方案）</title>
+    <link href="https://sqbfine.top/2022/10/11/22.BlockCanary/"/>
+    <id>https://sqbfine.top/2022/10/11/22.BlockCanary/</id>
+    <published>2022-10-11T06:58:44.609Z</published>
+    <updated>2022-10-11T06:58:44.609Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="检测机制"><a href="#检测机制" class="headerlink" title="检测机制"></a>检测机制</h2><pre><code>#Looper.Javamonitor.println(&quot;&gt;&gt;&gt;&gt;&gt;DiapatchingTo&quot;)msg.target.dispatchMesssage(msg)monitor.println(&quot;&gt;&gt;&gt;&gt;&gt;DiapatchingTo&quot;)</code></pre><p>通过dispatchMesssage的前后时间是否大于1s，如果大于判定为卡顿</p><pre><code>Choreographer.getInstance().postFrameCallback(new Choreographer.FrameCallback() &#123;        public void doFrame(long frameTimeNanos) &#123;                    &#125;&#125;)</code></pre><p>每次垂直同步信号发生时会在这里产生回调，一般16ms一次，也可以判断是否卡顿</p><p>Thread.currentThread().getStackTrace()[3]获取堆栈调用，可以知道那个方法正在耗时，这个方法不能乱用，因为会阻塞调用的线程</p><p>通过延迟调用并在时间阈值内取消的形式来判断卡顿的发生，通过上面的方法获取卡顿的方法</p><p>但不准确，因为可能延迟的时候，导致卡顿的方法结束了</p><h2 id="获取方法运行时间"><a href="#获取方法运行时间" class="headerlink" title="获取方法运行时间"></a>获取方法运行时间</h2><p>第三方库Hogo：侵入性高，功能弱</p><p>TraceView：性能开销大</p><p>SystemTrace：Trace.beginSection() Trace.endSection()</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;检测机制&quot;&gt;&lt;a href=&quot;#检测机制&quot; class=&quot;headerlink&quot; title=&quot;检测机制&quot;&gt;&lt;/a&gt;检测机制&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;#Looper.Java
+monitor.println(&amp;quot;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt</summary>
+      
+    
+    
+    
+    <category term="Android" scheme="https://sqbfine.top/categories/Android/"/>
+    
+    
+    <category term="Android，源码分析，性能优化" scheme="https://sqbfine.top/tags/Android%EF%BC%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%EF%BC%8C%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Gradle</title>
+    <link href="https://sqbfine.top/2022/10/11/23.Gradle/"/>
+    <id>https://sqbfine.top/2022/10/11/23.Gradle/</id>
+    <published>2022-10-11T06:58:44.609Z</published>
+    <updated>2022-10-11T06:58:44.609Z</updated>
+    
+    <content type="html"><![CDATA[<p>gradle文件里就是Groove语言</p><pre><code class="groovy">reposistories &#123;    google()&#125;相当于reposistories (&#123;    google()&#125;)</code></pre><p>也就是实际上大括号内的就是参数</p><p>这是Groove语言的闭包，类似于Java的lamada表达式，把方法作为参数传递，当然Java里的是匿名内部类</p><p>闭包：Closure</p><pre><code class="groovy">int methodA = &#123;    return 5&#125;void methodB(int value, Closure someMethod) &#123;    someMethod()&#125;methodB(5, &#123;  methodA()&#125;)可以写成methodB(5) &#123;  methodA()&#125;)</code></pre><p>所以传入的google()并不一定会立刻执行，而是被调用到才会执行</p><pre><code class="groovy">buildscript &#123;    repositories &#123;        google()        mavenCentral()    &#125;    dependencies &#123;        classpath &quot;com.android.tools.build:gradle:7.0.4&quot;        classpath &quot;org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.20&quot;        // NOTE: Do not place your application dependencies here; they belong        // in the individual module build.gradle files    &#125;&#125;</code></pre><p>methodMissing：如果调用方法没有，会进入这里查找，能查到就执行对应内容</p><pre><code>buildTypes &#123;    debug&#123;&#125;&#125;flavorDimensions &#39;维度&#39;productFlavors &#123;    free&#123;&#125;    paid&#123;&#125;&#125;</code></pre><pre><code>task clean(type: Delete) &#123;    print 1    delete rootProject.builder        doLast &#123;        println 3    &#125;&#125;</code></pre><p>先配置在执行，不用task命令也会进行配置</p><pre><code>task after(dependsOn: clean) &#123;    doFirst&#125;</code></pre><p>依赖，会在执行前先执行clean task</p><p>有向无环图</p><p>生命周期：</p><p>初始化阶段：执行setting，确定主项目和子项目</p><p>配置阶段：绘制task执行依赖图</p><p>执行阶段：执行task</p><p>在第一个和第二个阶段之间插入任务：写在setting.gradle里</p><p>第二第三：在build里<code>afterEvaluate&#123;&#125;</code></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;gradle文件里就是Groove语言&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;groovy&quot;&gt;reposistories &amp;#123;
+    google()
+&amp;#125;
+相当于
+reposistories (&amp;#123;
+    google()
+&amp;#125;)</summary>
+      
+    
+    
+    
+    <category term="Groove" scheme="https://sqbfine.top/categories/Groove/"/>
+    
+    
+    <category term="Android，Gradle，项目构建" scheme="https://sqbfine.top/tags/Android%EF%BC%8CGradle%EF%BC%8C%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Android应用启动流程（待细化）</title>
+    <link href="https://sqbfine.top/2022/10/11/16.Activity%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/"/>
+    <id>https://sqbfine.top/2022/10/11/16.Activity%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/</id>
+    <published>2022-10-11T06:58:44.609Z</published>
+    <updated>2022-10-11T06:58:44.609Z</updated>
+    
+    <content type="html"><![CDATA[<p>冷启动就是在 Launcher 进程中开启另一个引用 Activity 的过程。这是一个 Launcher 进程和 AMS，应用进程和 AMS，WMS 双向通信的过程：</p><ul><li>Launcher 进程和 AMS 说：“我要启动Activity1”</li><li>AMS创建出 Activity1 对应的 ActivityRecord 以及 TaskRecord，通知 Launcher 进程执行 onPause()</li><li>Launcher 执行 onPause()，并告知 AMS</li><li>启动一个 starting window，AMS 请求 zygote 进程 fork一个新进程</li><li>在新进程中，构建ActivityThread，并调用main()，在其中开启主线程消息循环。</li><li>AMS 开始回调Activity1的各种生命周期方法。</li><li>当执行到 Activity.onAttch()时，PhoneWindow 被构建。</li><li>当执行到 Activity.onCreate()时，setContentView()会被委托给 PhoneWindow，并在其中构建DecorView，再根据主题解析系统预定义文件，作为 DecorView 的孩子，布局文件中肯定有一个 id 为 content 的容器控件，他将成为 setContentView 的父亲。</li><li>当执行到 Activity.onResume()时，DecorView 先被设置为 invisible，然后将其添加到窗口，此过程中会构建 ViewRootImpl 对象，它是 app 进行和 WMS 双向通信的纽带。ViewRootImpl.requestLayout()会被调用，以触发View树自顶向下的绘制。</li><li>View 树遍历，会被包装成一个任务抛给 Choreographer。在此之前 ViewRootImpl 会向主线程消息队列抛一个同步消息屏障。以达到优先遍历异步消息的效果。</li><li>Choreographer 将任务暂存在链式数组结构中，然后注册监听下一个 vsync 信号。</li><li>待下一个 vsync 信号到来之时，Choreographer 会从链上摘取所有比当前时间更早的任务，并将他们包装成一个异步消息抛到主线程执行。</li><li>异步消息的执行，即是从顶层视图开始，自顶向下，逐个视图进行 measure，layout，draw的过程。</li><li>ViewRootImpl 持有一个 surface，它是原始图形缓冲区的一个句柄，原始图形缓冲区是一块存放像素数据的内存地址，这块内存地址由app进程和SurfaceFlinger共享。当 app进程执行完上述步骤时，就意味着像素数据已经填入该块内存，于是 app 通知 SurfaceFlinger 像素数据已经就绪，可以进行合成并渲染到屏幕了。</li><li>当 DecorView 完成渲染后，就会被设置为 visible，界面展示出来。</li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;冷启动就是在 Launcher 进程中开启另一个引用 Activity 的过程。这是一个 Launcher 进程和 AMS，应用进程和 AMS，WMS 双向通信的过程：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Launcher 进程和 AMS 说：“我要启动Activity1”&lt;/li&gt;</summary>
+      
+    
+    
+    
+    <category term="Android" scheme="https://sqbfine.top/categories/Android/"/>
+    
+    
+    <category term="Android，源码分析" scheme="https://sqbfine.top/tags/Android%EF%BC%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>登录与授权</title>
+    <link href="https://sqbfine.top/2022/10/11/3.%E7%99%BB%E5%BD%95%E4%B8%8E%E6%8E%88%E6%9D%83/"/>
+    <id>https://sqbfine.top/2022/10/11/3.%E7%99%BB%E5%BD%95%E4%B8%8E%E6%8E%88%E6%9D%83/</id>
+    <published>2022-10-11T06:58:44.609Z</published>
+    <updated>2022-10-11T06:58:44.609Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="登录和授权"><a href="#登录和授权" class="headerlink" title="登录和授权"></a>登录和授权</h1><h2 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h2><p>服务器希望客户端存储在客户端本地的数据</p><p>XSS：HttpOnly 只允许网站访问cookie，禁止其它网站的JS获取cookie内容</p><p>XSRF：Referer 标志Cookie来源，防止被其他来源的cookie攻击</p><h2 id="Authorization"><a href="#Authorization" class="headerlink" title="Authorization"></a>Authorization</h2><ul><li><p>Basic</p><p>格式：Authorization: Basic &lt;<a href="username:password(Base64ed)">username:password(Base64ed)</a>&gt; 就是Basic + 空格+ 用户名：密码的base64转码</p></li><li><p>Bearer：</p><p>格式：Authorization: Bearer <bearer token></p><p>OAuth2：第三方授权与登录，已掘金用github账号为例，去github申请client_id，掘金前端进行第三方登录时传入，github返回Authorization code，然后掘金前端传给自家服务器，服务器向github发送Authorization code与client_secret（也是与client_id一同申请下来），然后github返回access_token，掘金后端使用此token从github获取用户信息并登录，发送格式为上方bearer格式</p></li><li><p>Refresh Token</p></li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;登录和授权&quot;&gt;&lt;a href=&quot;#登录和授权&quot; class=&quot;headerlink&quot; title=&quot;登录和授权&quot;&gt;&lt;/a&gt;登录和授权&lt;/h1&gt;&lt;h2 id=&quot;Cookie&quot;&gt;&lt;a href=&quot;#Cookie&quot; class=&quot;headerlink&quot; title=&quot;C</summary>
+      
+    
+    
+    
+    <category term="计算机基础" scheme="https://sqbfine.top/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/"/>
+    
+    
+    <category term="网络，安全" scheme="https://sqbfine.top/tags/%E7%BD%91%E7%BB%9C%EF%BC%8C%E5%AE%89%E5%85%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>TCP/IP</title>
+    <link href="https://sqbfine.top/2022/10/11/4.TCP:IP/"/>
+    <id>https://sqbfine.top/2022/10/11/4.TCP:IP/</id>
+    <published>2022-10-11T06:58:44.609Z</published>
+    <updated>2022-10-11T06:58:44.609Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="TPC-IP协议族"><a href="#TPC-IP协议族" class="headerlink" title="TPC/IP协议族"></a>TPC/IP协议族</h1><p>互联网协议族：一系列协议组成的一个网络分层模型</p><p>为什么要分层，网络不稳定，所已传输需要分块，即传输层，不同的传输协议有共同的传输需求，所以抽取了网络层</p><p>应用层 HTTP FTP DNS SSH</p><p>传输层 TCP/UDP 数据的分块与组合</p><p>网络层 IP协议 已最小单位来发送和接受分块的网络数据</p><p>数据链路层 以太网，WIFI，物理级别的支持，线缆的协议之类的</p><h2 id="TCP连接"><a href="#TCP连接" class="headerlink" title="TCP连接"></a>TCP连接</h2><p>就是在连接前建立对对方的认识，这样就不用每次发送数据时携带自己信息</p><p>tcp是有状态的连接，http无状态</p><p>tcp需要建立连接，而连接需要一个互相认识的过程</p><p>tcp协议在java的实现就是socket</p><p>TCP三次握手四次挥手，为啥握手3次，因为防止历史连接和避免资源浪费，为啥挥手多了一次，因为双方可能都有残余消息</p><h3 id="长连接"><a href="#长连接" class="headerlink" title="长连接"></a>长连接</h3><p>tcp虽然需要手动关闭，但长时间不发数据，连接会被运营商或网关关闭</p><p>实现长连接方式：心跳包</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;TPC-IP协议族&quot;&gt;&lt;a href=&quot;#TPC-IP协议族&quot; class=&quot;headerlink&quot; title=&quot;TPC/IP协议族&quot;&gt;&lt;/a&gt;TPC/IP协议族&lt;/h1&gt;&lt;p&gt;互联网协议族：一系列协议组成的一个网络分层模型&lt;/p&gt;
+&lt;p&gt;为什么要分层，网络不稳</summary>
+      
+    
+    
+    
+    <category term="计算机基础" scheme="https://sqbfine.top/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/"/>
+    
+    
+    <category term="网络通信" scheme="https://sqbfine.top/tags/%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>HTTPS</title>
+    <link href="https://sqbfine.top/2022/10/11/5.https/"/>
+    <id>https://sqbfine.top/2022/10/11/5.https/</id>
+    <published>2022-10-11T06:58:44.609Z</published>
+    <updated>2022-10-11T06:58:44.609Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h1><p>HTTP over SSL/TLS</p><p>定义：在HTTP之下增加一个安全层</p><p>本质：在客户端与服务器之间用非对称加密协商出一套对称秘钥，每次传输用此秘钥加密解密，为啥不直接非对称加密，因为效率低</p><p>流程：</p><ol><li><p>Client Hello，客户端请求建立TLS连接，发送tls版本、可选加密套件，客户端随机数</p></li><li><p>Server Hello，发送tls版本、可选加密套件，服务端随机数</p></li><li><p>服务器发回证书</p></li><li><p>客户端验证服务器证书 </p><p>服务器证书包含了公钥和服务器主机名、地址与证书的签名，签名可由下方证书签发机构的公钥验证</p><p>证书签发机构的证书</p><p>根证书机构的证书（这个在本地，信息可从上方证书查询）</p></li><li><p>客户端信任服务器证书后，和服务器协商对称秘钥（客户端会再生成一个premaster-secret，加密后给到服务端，两端各自使用自己的随机数生成Master secret，里面包含各自的加密秘钥和MAC secret）</p><p>两个随机数，客户端服务器各一个加密秘钥</p></li><li><p>使用秘钥开始通信</p></li></ol><p>使用随机数是为了防止别人使用你的老数据攻击服务器</p><p>使用两个秘钥是为了防止别人把你发出的数据原样发给你，这样你解密不会出错，可能会误认为是正常数据</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;HTTPS&quot;&gt;&lt;a href=&quot;#HTTPS&quot; class=&quot;headerlink&quot; title=&quot;HTTPS&quot;&gt;&lt;/a&gt;HTTPS&lt;/h1&gt;&lt;p&gt;HTTP over SSL/TLS&lt;/p&gt;
+&lt;p&gt;定义：在HTTP之下增加一个安全层&lt;/p&gt;
+&lt;p&gt;本质：在客户端与</summary>
+      
+    
+    
+    
+    <category term="计算机基础" scheme="https://sqbfine.top/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/"/>
+    
+    
+    <category term="网络通信，安全" scheme="https://sqbfine.top/tags/%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%EF%BC%8C%E5%AE%89%E5%85%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Retrofit源码</title>
+    <link href="https://sqbfine.top/2022/10/11/6.Retrofit/"/>
+    <id>https://sqbfine.top/2022/10/11/6.Retrofit/</id>
+    <published>2022-10-11T06:58:44.609Z</published>
+    <updated>2022-10-11T06:58:44.609Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Retrofit"><a href="#Retrofit" class="headerlink" title="Retrofit"></a>Retrofit</h1><p>一种类型安全的http连接工具</p><p>对okhttp的封装，更易用，但伴随着功能的收窄</p><h2 id="源码流程"><a href="#源码流程" class="headerlink" title="源码流程"></a>源码流程</h2><ol><li><p>retrofit.creat()</p><pre><code>#Retrofit.java#public &lt;T&gt; T create(final Class&lt;T&gt; service) &#123;    validateServiceInterface(service);//检查接口与其中的方法是否合规    return (T)        Proxy.newProxyInstance(  //动态代理            service.getClassLoader(),            new Class&lt;?&gt;[] &#123;service&#125;,            new InvocationHandler() &#123;              private final Platform platform = Platform.get();              private final Object[] emptyArgs = new Object[0];              @Override              public @Nullable Object invoke(Object proxy, Method method, @Nullable Object[] args)                  throws Throwable &#123;                // If the method is a method from Object then defer to normal invocation.                if (method.getDeclaringClass() == Object.class) &#123;                  return method.invoke(this, args);//检查方法是object中的方法，不作处理，直接运行                &#125;                args = args != null ? args : emptyArgs;                return platform.isDefaultMethod(method)                    ? platform.invokeDefaultMethod(method, service, proxy, args)//检查方法是java8默认方法不作处理直接运行                    : loadServiceMethod(method).invoke(args);//进入下一步              &#125;            &#125;);  &#125;</code></pre><p>动态代理：</p><p>动态：运行时创建</p><p>代理：对方法做统一处理</p></li><li><p>parseAnnotattions位于ServiceMethod.Java：解析方法的注解参数等</p></li><li><p>invoke位于ServiceMethod.Java：创建okhttpCall，做网络交互</p></li><li><p>responseConvert位于OkHttpCall：如果有addConvertFactory()，会对response’Body进行指定的转换，比如转成json</p></li><li><p>返回的call通过callAdapter转化把返回结果转为指定格式，rxJava或抛到主线程</p></li></ol>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;Retrofit&quot;&gt;&lt;a href=&quot;#Retrofit&quot; class=&quot;headerlink&quot; title=&quot;Retrofit&quot;&gt;&lt;/a&gt;Retrofit&lt;/h1&gt;&lt;p&gt;一种类型安全的http连接工具&lt;/p&gt;
+&lt;p&gt;对okhttp的封装，更易用，但伴随着功能的收</summary>
+      
+    
+    
+    
+    <category term="Android" scheme="https://sqbfine.top/categories/Android/"/>
+    
+    
+    <category term="Android，源码分析" scheme="https://sqbfine.top/tags/Android%EF%BC%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>OkHttp源码</title>
+    <link href="https://sqbfine.top/2022/10/11/7.OkHttp%E7%BB%93%E6%9E%84/"/>
+    <id>https://sqbfine.top/2022/10/11/7.OkHttp%E7%BB%93%E6%9E%84/</id>
+    <published>2022-10-11T06:58:44.609Z</published>
+    <updated>2022-10-11T06:58:44.609Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="OkHttp"><a href="#OkHttp" class="headerlink" title="OkHttp"></a>OkHttp</h1><pre><code class="java">OkHttpClient client = new OkHttpClient();String run(String url) throws IOException &#123;  Request request = new Request.Builder()      .url(url)      .build();  try (Response response = client.newCall(request).execute()) &#123;    return response.body().string();  &#125;&#125;</code></pre><p>client.newCall –&gt; RealCall</p><pre><code class="kotlin">#RealCall.kt#override fun enqueue(responseCallback: Callback) &#123;    check(executed.compareAndSet(false, true)) &#123; &quot;Already Executed&quot; &#125;    callStart() // --&gt;eventListener.callStart(this) 对整个请求的监听    client.dispatcher.enqueue(AsyncCall(responseCallback))&#125;</code></pre><p>Dispatcher –&gt; 用于线程调度</p><pre><code class="kotlin">#Dispatcher#@get:Synchronized@get:JvmName(&quot;executorService&quot;) val executorService: ExecutorService //使用Executor完成线程调度  get() &#123;    if (executorServiceOrNull == null) &#123;      executorServiceOrNull = ThreadPoolExecutor(0, Int.MAX_VALUE, 60, TimeUnit.SECONDS,          SynchronousQueue(), threadFactory(&quot;$okHttpName Dispatcher&quot;, false))    &#125;    return executorServiceOrNull!!  &#125;</code></pre><p>dispatcher.enqueue</p><pre><code class="kotlin">#Dispatcher#internal fun enqueue(call: AsyncCall) &#123;  synchronized(this) &#123;    readyAsyncCalls.add(call) //加入双向队列，准备执行，为啥是准备，因为线程池可能满了需要等待（总请求数，正对某个主机的请求数）    if (!call.call.forWebSocket) &#123;//判断当前请求的主机是否有其他请求进行并记录      val existingCall = findExistingCallWithHost(call.host)      if (existingCall != null) call.reuseCallsPerHostFrom(existingCall)    &#125;  &#125;  promoteAndExecute()&#125;</code></pre><p>promoteAndExecute()</p><pre><code class="kotlin">#Dispatcher#  把符合条件的call推举出来并执行private fun promoteAndExecute(): Boolean &#123;    this.assertThreadDoesntHoldLock()    val executableCalls = mutableListOf&lt;AsyncCall&gt;()    val isRunning: Boolean    synchronized(this) &#123;      val i = readyAsyncCalls.iterator()      while (i.hasNext()) &#123;        val asyncCall = i.next()                //筛选符合条件的call        if (runningAsyncCalls.size &gt;= this.maxRequests) break // 总上限64        if (asyncCall.callsPerHost.get() &gt;= this.maxRequestsPerHost) continue //单个主机上限5        i.remove()        asyncCall.callsPerHost.incrementAndGet()        executableCalls.add(asyncCall)        runningAsyncCalls.add(asyncCall)      &#125;      isRunning = runningCallsCount() &gt; 0    &#125;        //执行    for (i in 0 until executableCalls.size) &#123;      val asyncCall = executableCalls[i]      asyncCall.executeOn(executorService)    &#125;    return isRunning  &#125;</code></pre><p>executeOn()</p><pre><code class="kotlin">#RealCall#fun executeOn(executorService: ExecutorService) &#123;      client.dispatcher.assertThreadDoesntHoldLock()      var success = false      try &#123;        //这里实现了线程切换，this是外层的class AsyncCall: Runnable，找到内部run方法查看具体执行        executorService.execute(this)        success = true      &#125; catch (e: RejectedExecutionException) &#123;        val ioException = InterruptedIOException(&quot;executor rejected&quot;)        ioException.initCause(e)        noMoreExchanges(ioException)        responseCallback.onFailure(this@RealCall, ioException)      &#125; finally &#123;        if (!success) &#123;          client.dispatcher.finished(this) // This call is no longer running!        &#125;      &#125;    &#125;</code></pre><pre><code class="kotlin">#RealCall#override fun run() &#123;  threadName(&quot;OkHttp $&#123;redactedUrl()&#125;&quot;) &#123;    var signalledCallback = false    timeout.enter()    try &#123;      val response = getResponseWithInterceptorChain()//***发送请求拿到响应数据的过程      signalledCallback = true      responseCallback.onResponse(this@RealCall, response)//回调    &#125; catch (e: IOException) &#123;      if (signalledCallback) &#123;        // Do not signal the callback twice!        Platform.get().log(&quot;Callback failure for $&#123;toLoggableString()&#125;&quot;, Platform.INFO, e)      &#125; else &#123;        responseCallback.onFailure(this@RealCall, e)      &#125;    &#125; catch (t: Throwable) &#123;      cancel()      if (!signalledCallback) &#123;        val canceledException = IOException(&quot;canceled due to $t&quot;)        canceledException.addSuppressed(t)        responseCallback.onFailure(this@RealCall, canceledException)      &#125;      throw t    &#125; finally &#123;      client.dispatcher.finished(this)    &#125;  &#125;&#125;</code></pre><ol><li>创建Call</li><li>在call的内部client.dispatcher.enqueue，作为参数把自己传入</li><li>Dispatch内部先把call加入准备队列</li><li>对队列进行轮询，不超过限制的call进入开始队列</li><li>遍历开始队列，每一个call.executeOn</li><li>call.executeOn内使用dispatch传来的executorService进行线程切换，并且使用chain开始进行请求</li></ol>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;OkHttp&quot;&gt;&lt;a href=&quot;#OkHttp&quot; class=&quot;headerlink&quot; title=&quot;OkHttp&quot;&gt;&lt;/a&gt;OkHttp&lt;/h1&gt;&lt;pre&gt;&lt;code class=&quot;java&quot;&gt;OkHttpClient client = new OkHttpC</summary>
+      
+    
+    
+    
+    <category term="Android" scheme="https://sqbfine.top/categories/Android/"/>
+    
+    
+    <category term="Android，源码分析" scheme="https://sqbfine.top/tags/Android%EF%BC%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>OkHttp源码</title>
+    <link href="https://sqbfine.top/2022/10/11/8.OkHttp%E9%85%8D%E7%BD%AE/"/>
+    <id>https://sqbfine.top/2022/10/11/8.OkHttp%E9%85%8D%E7%BD%AE/</id>
+    <published>2022-10-11T06:58:44.609Z</published>
+    <updated>2022-10-11T06:58:44.609Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="OkHttp"><a href="#OkHttp" class="headerlink" title="OkHttp"></a>OkHttp</h1><p>OkhttpClient.Java OkHttp的总管理类</p><pre><code class="kotlin">//负责线程切换@get:JvmName(&quot;dispatcher&quot;) val dispatcher: Dispatcher = builder.dispatcher//连接池 内部维护了一批连接，每次请求会查看连接池中是否已有，没有再创建新连接，使用过的连接也会进入连接池，池内连接根据配置回收或继续存储，用完的连接可以重用，正在使用的也可以（http2多路复用）@get:JvmName(&quot;connectionPool&quot;) val connectionPool: ConnectionPool = builder.connectionPoo/** * Returns an immutable list of interceptors that observe the full span of each call: from before * the connection is established (if any) until after the response source is selected (either the * origin server, cache, or both). */@get:JvmName(&quot;interceptors&quot;) val interceptors: List&lt;Interceptor&gt; =    builder.interceptors.toImmutableList(/** * Returns an immutable list of interceptors that observe a single network request and response. * These interceptors must call [Interceptor.Chain.proceed] exactly once: it is an error for * a network interceptor to short-circuit or repeat a network request. */@get:JvmName(&quot;networkInterceptors&quot;) val networkInterceptors: List&lt;Interceptor&gt; =    builder.networkInterceptors.toImmutableList(//连接过程事件监听器@get:JvmName(&quot;eventListenerFactory&quot;) val eventListenerFactory: EventListener.Factory =    builder.eventListenerFactor//连接或请求失败是否重试，默认true@get:JvmName(&quot;retryOnConnectionFailure&quot;) val retryOnConnectionFailure: Boolean =    builder.retryOnConnectionFailure//具体实例9.2 9:57，用于token过期，刷新后重发请求@get:JvmName(&quot;authenticator&quot;) val authenticator: Authenticator = builder.authenticator//是否接受重定向@get:JvmName(&quot;followRedirects&quot;) val followRedirects: Boolean = builder.followRedirects//重定向时协议切换是否继续，比如http变https@get:JvmName(&quot;followSslRedirects&quot;) val followSslRedirects: Boolean = builder.followSslRedirects//存储cookie@get:JvmName(&quot;cookieJar&quot;) val cookieJar: CookieJar = builder.cookieJar//缓存@get:JvmName(&quot;cache&quot;) val cache: Cache? = builder.cache//domain name system，这是一个Java原生方法，可以解析域名@get:JvmName(&quot;dns&quot;) val dns: Dns = builder.dns//网络代理@get:JvmName(&quot;proxy&quot;) val proxy: Proxy? = builder.proxy//网络代理详细@get:JvmName(&quot;proxySelector&quot;) val proxySelector: ProxySelector =    when &#123;      // Defer calls to ProxySelector.getDefault() because it can throw a SecurityException.      builder.proxy != null -&gt; NullProxySelector      else -&gt; builder.proxySelector ?: ProxySelector.getDefault() ?: NullProxySelector    &#125;//代理的认证处理@get:JvmName(&quot;proxyAuthenticator&quot;) val proxyAuthenticator: Authenticator =    builder.proxyAuthenticator//创建socket@get:JvmName(&quot;socketFactory&quot;) val socketFactory: SocketFactory = builder.socketFactory//ssl的socketprivate val sslSocketFactoryOrNull: SSLSocketFactory?@get:JvmName(&quot;sslSocketFactory&quot;) val sslSocketFactory: SSLSocketFactory  get() = sslSocketFactoryOrNull ?: throw IllegalStateException(&quot;CLEARTEXT-only client&quot;)// 验证ssl证书的类，x509是证书格式@get:JvmName(&quot;x509TrustManager&quot;) val x509TrustManager: X509TrustManager?//连接标准，也就是tls版本和加密套件@get:JvmName(&quot;connectionSpecs&quot;) val connectionSpecs: List&lt;ConnectionSpec&gt; =    builder.connectionSpecs//支持的http协议@get:JvmName(&quot;protocols&quot;) val protocols: List&lt;Protocol&gt; = builder.protocols//验证证书与host是否对应@get:JvmName(&quot;hostnameVerifier&quot;) val hostnameVerifier: HostnameVerifier = builder.hostnameVerifier//指定网站证书配置一个签名，连接时会校验@get:JvmName(&quot;certificatePinner&quot;) val certificatePinner: CertificatePinner//操作x509验证证书@get:JvmName(&quot;certificateChainCleaner&quot;) val certificateChainCleaner: CertificateChainCleaner?/** * Default call timeout (in milliseconds). By default there is no timeout for complete calls, but * there is for the connect, write, and read actions within a call. */@get:JvmName(&quot;callTimeoutMillis&quot;) val callTimeoutMillis: Int = builder.callTimeou      /** Default connect timeout (in milliseconds). The default is 10 seconds. */@get:JvmName(&quot;connectTimeoutMillis&quot;)val connectTimeoutMillis: Int = builder.connectTimeou      /** Default read timeout (in milliseconds). The default is 10 seconds. */@get:JvmName(&quot;readTimeoutMillis&quot;) val readTimeoutMillis: Int = builder.readTimeou      /** Default write timeout (in milliseconds). The default is 10 seconds. */@get:JvmName(&quot;writeTimeoutMillis&quot;) val writeTimeoutMillis: Int = builder.writeTimeou      /**心跳间隔 Web socket and HTTP/2 ping interval (in milliseconds). By default pings are not sent. */@get:JvmName(&quot;pingIntervalMillis&quot;) val pingIntervalMillis: Int = builder.pingInterva</code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;OkHttp&quot;&gt;&lt;a href=&quot;#OkHttp&quot; class=&quot;headerlink&quot; title=&quot;OkHttp&quot;&gt;&lt;/a&gt;OkHttp&lt;/h1&gt;&lt;p&gt;OkhttpClient.Java OkHttp的总管理类&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;ko</summary>
+      
+    
+    
+    
+    <category term="Android" scheme="https://sqbfine.top/categories/Android/"/>
+    
+    
+    <category term="Android，源码分析" scheme="https://sqbfine.top/tags/Android%EF%BC%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>OkHttp源码</title>
+    <link href="https://sqbfine.top/2022/10/11/9.OkHttp%E8%AF%B7%E6%B1%82%E6%B5%81%E7%A8%8B/"/>
+    <id>https://sqbfine.top/2022/10/11/9.OkHttp%E8%AF%B7%E6%B1%82%E6%B5%81%E7%A8%8B/</id>
+    <published>2022-10-11T06:58:44.609Z</published>
+    <updated>2022-10-11T06:58:44.609Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="OkHttp"><a href="#OkHttp" class="headerlink" title="OkHttp"></a>OkHttp</h1><p>主要方法入口：</p><pre><code class="kotlin">#RealCall.kt#    internal fun getResponseWithInterceptorChain(): Response &#123;    // 组装拦截器    val interceptors = mutableListOf&lt;Interceptor&gt;()    interceptors += client.interceptors    interceptors += RetryAndFollowUpInterceptor(client)    interceptors += BridgeInterceptor(client.cookieJar)    interceptors += CacheInterceptor(client.cache)    interceptors += ConnectInterceptor    if (!forWebSocket) &#123;      interceptors += client.networkInterceptors    &#125;    interceptors += CallServerInterceptor(forWebSocket)    //链条实例化    val chain = RealInterceptorChain(        call = this,        interceptors = interceptors,        index = 0,        exchange = null,        request = originalRequest,        connectTimeoutMillis = client.connectTimeoutMillis,        readTimeoutMillis = client.readTimeoutMillis,        writeTimeoutMillis = client.writeTimeoutMillis    )    //开始处理    var calledNoMoreExchanges = false    try &#123;      val response = chain.proceed(originalRequest)      if (isCanceled()) &#123;        response.closeQuietly()        throw IOException(&quot;Canceled&quot;)      &#125;      return response    &#125; catch (e: IOException) &#123;      calledNoMoreExchanges = true      throw noMoreExchanges(e) as Throwable    &#125; finally &#123;      if (!calledNoMoreExchanges) &#123;        noMoreExchanges(null)      &#125;    &#125;  &#125;</code></pre><p>chain.proceed(originalRequest)：开始责任链</p><h3 id="RetryAndFollowUpInterceptor："><a href="#RetryAndFollowUpInterceptor：" class="headerlink" title="RetryAndFollowUpInterceptor："></a>RetryAndFollowUpInterceptor：</h3><ol><li>call.enterNetworkInterceptorExchange(request, newExchangeFinder)连接准备</li><li>procced</li><li>出错重试</li><li>重定向</li></ol><h3 id="BridgeInterceptor："><a href="#BridgeInterceptor：" class="headerlink" title="BridgeInterceptor："></a>BridgeInterceptor：</h3><p>组装一些Request参数，比如host，content-lenght等，gzip与解压</p><h3 id="CacheInterceptor："><a href="#CacheInterceptor：" class="headerlink" title="CacheInterceptor："></a>CacheInterceptor：</h3><p>缓存控制，包括一些与缓存相关head处理</p><h3 id="ConnectInterceptor："><a href="#ConnectInterceptor：" class="headerlink" title="ConnectInterceptor："></a>ConnectInterceptor：</h3><p>创建连接</p><pre><code class="kotlin">#ConnectInterceptor.ktobject ConnectInterceptor : Interceptor &#123;  @Throws(IOException::class)  override fun intercept(chain: Interceptor.Chain): Response &#123;    val realChain = chain as RealInterceptorChain    val exchange = realChain.call.initExchange(chain)//获取exchange    val connectedChain = realChain.copy(exchange = exchange)    return connectedChain.proceed(realChain.request)  &#125;&#125;</code></pre><p>call.initExchange(chain)</p><pre><code class="kotlin">#RealCall.kt#internal fun initExchange(chain: RealInterceptorChain): Exchange &#123;    synchronized(this) &#123;      check(expectMoreExchanges) &#123; &quot;released&quot; &#125;      check(!responseBodyOpen)      check(!requestBodyOpen)    &#125;    val exchangeFinder = this.exchangeFinder!!    val codec = exchangeFinder.find(client, chain)//coder &amp; decoder编码解码，主要是http1和http2的区别，请求头的具体书写    val result = Exchange(this, eventListener, exchangeFinder, codec)//网络报文交互    this.interceptorScopedExchange = result    this.exchange = result    synchronized(this) &#123;      this.requestBodyOpen = true      this.responseBodyOpen = true    &#125;    if (canceled) throw IOException(&quot;Canceled&quot;)    return result  &#125;</code></pre><p>exchangeFinder.find(client, chain)</p><pre><code class="kotlin">#ExchangeFinder.kt#fun find(    client: OkHttpClient,    chain: RealInterceptorChain  ): ExchangeCodec &#123;    try &#123;      val resultConnection = findHealthyConnection(//找到一个健康的可用连接          connectTimeout = chain.connectTimeoutMillis,          readTimeout = chain.readTimeoutMillis,          writeTimeout = chain.writeTimeoutMillis,          pingIntervalMillis = client.pingIntervalMillis,          connectionRetryEnabled = client.retryOnConnectionFailure,          doExtensiveHealthChecks = chain.request.method != &quot;GET&quot;      )      return resultConnection.newCodec(client, chain)//基于上方连接新建一个编码解码器    &#125; catch (e: RouteException) &#123;      trackFailure(e.lastConnectException)      throw e    &#125; catch (e: IOException) &#123;      trackFailure(e)      throw RouteException(e)    &#125;  &#125;</code></pre><p>findHealthyConnection</p><pre><code class="kotlin">#ExchangeFinder.kt#     while (true) &#123;      val candidate = findConnection(//拿到一个可用连接          connectTimeout = connectTimeout,          readTimeout = readTimeout,          writeTimeout = writeTimeout,          pingIntervalMillis = pingIntervalMillis,          connectionRetryEnabled = connectionRetryEnabled      )      // Confirm that the connection is good.      if (candidate.isHealthy(doExtensiveHealthChecks)) &#123;//对连接进行验证(socket是否关闭，http2心跳情况等)，如果不健康就重来,        return candidate      &#125;    &#125;</code></pre><p>findConnection</p><p>最开始直接拿call里是否有连接并且可用call.connection != nul，比如重定向指向同一个服务器的情况，会直接重用</p><p>第一次走到callAcquirePooledConnection入参中route为null，此时仅会寻找http1的可复用连接</p><p>第二次会取出route再次进入另一个callAcquirePooledConnection并且放入route，此时http1和http2的连接都会找（http2多路复用）</p><p>第三次进入说明没找到可复用连接，自己创建</p><p>创建好了后会再次尝试从池里拿一次，入参的最后一个变为true（只拿多路复用连接），应对极端情况</p><pre><code class="kotlin">#ExchangeFinder.kt#private fun findConnection(    connectTimeout: Int,    readTimeout: Int,    writeTimeout: Int,    pingIntervalMillis: Int,    connectionRetryEnabled: Boolean  ): RealConnection &#123;    if (call.isCanceled()) throw IOException(&quot;Canceled&quot;)    // Attempt to reuse the connection from the call.    val callConnection = call.connection // This may be mutated by releaseConnectionNoEvents()!    if (callConnection != null) &#123;      var toClose: Socket? = null      synchronized(callConnection) &#123;        if (callConnection.noNewExchanges || !sameHostAndPort(callConnection.route().address.url)) &#123;          toClose = call.releaseConnectionNoEvents()        &#125;      &#125;      // If the call&#39;s connection wasn&#39;t released, reuse it. We don&#39;t call connectionAcquired() here      // because we already acquired it.      if (call.connection != null) &#123;        check(toClose == null)        return callConnection      &#125;      // The call&#39;s connection was released.      toClose?.closeQuietly()      eventListener.connectionReleased(call, callConnection)    &#125;    // We need a new connection. Give it fresh stats.    refusedStreamCount = 0    connectionShutdownCount = 0    otherFailureCount = 0    // Attempt to get a connection from the pool.    //尝试拿一个已经在池里的连接 ***1    if (connectionPool.callAcquirePooledConnection(address, call, null, false)) &#123;//请求数未超限并且连得同一主机      val result = call.connection!!      eventListener.connectionAcquired(call, result)      return result    &#125;    // Nothing in the pool. Figure out what route we&#39;ll try next.    val routes: List&lt;Route&gt;?    val route: Route    if (nextRouteToTry != null) &#123;      // Use a route from a preceding coalesced connection.      routes = null      route = nextRouteToTry!!      nextRouteToTry = null    &#125; else if (routeSelection != null &amp;&amp; routeSelection!!.hasNext()) &#123;      // Use a route from an existing route selection.      routes = null      route = routeSelection!!.next()    &#125; else &#123;      // Compute a new route selection. This is a blocking operation!      var localRouteSelector = routeSelector      if (localRouteSelector == null) &#123;        localRouteSelector = RouteSelector(address, call.client.routeDatabase, call, eventListener)        this.routeSelector = localRouteSelector      &#125;      val localRouteSelection = localRouteSelector.next()      routeSelection = localRouteSelection      routes = localRouteSelection.routes      if (call.isCanceled()) throw IOException(&quot;Canceled&quot;)      // Now that we have a set of IP addresses, make another attempt at getting a connection from      // the pool. We have a better chance of matching thanks to connection coalescing.      if (connectionPool.callAcquirePooledConnection(address, call, routes, false)) &#123;        val result = call.connection!!        eventListener.connectionAcquired(call, result)        return result      &#125;      route = localRouteSelection.next()    &#125;    // Connect. Tell the call about the connecting call so async cancels work.    val newConnection = RealConnection(connectionPool, route)    call.connectionToCancel = newConnection    try &#123;      newConnection.connect(          connectTimeout,          readTimeout,          writeTimeout,          pingIntervalMillis,          connectionRetryEnabled,          call,          eventListener      )//针对不同的协议类型，建立不同的TCP连接，（rawSocket-&gt; socket，http1/2）    &#125; finally &#123;      call.connectionToCancel = null    &#125;    call.client.routeDatabase.connected(newConnection.route())    // If we raced another call connecting to this host, coalesce the connections. This makes for 3    // different lookups in the connection pool!    if (connectionPool.callAcquirePooledConnection(address, call, routes, true)) &#123;      val result = call.connection!!      nextRouteToTry = route      newConnection.socket().closeQuietly()      eventListener.connectionAcquired(call, result)      return result    &#125;    synchronized(newConnection) &#123;      connectionPool.put(newConnection)      call.acquireConnectionNoEvents(newConnection)    &#125;    eventListener.connectionAcquired(call, newConnection)    return newConnection  &#125;</code></pre><p>findConnection***1 connectionPool.callAcquirePooledConnection</p><pre><code class="kotlin">#RealConnectionPool.kt#//判断连接是否可以复用的主逻辑//address就是一个包含了host和端口信息的集合//route包含ip地址，代理模式，address等信息  internal fun isEligible(address: Address, routes: List&lt;Route&gt;?): Boolean &#123;    assertThreadHoldsLock()    // If this connection is not accepting new exchanges, we&#39;re done.    //没有超过每个连接能够承受的请求数（http1为1，http2默认为4）|| 依然可以接受新请求    if (calls.size &gt;= allocationLimit || noNewExchanges) return false    // If the non-host fields of the address don&#39;t overlap, we&#39;re done.    //判读两个连接是否相同，端口，协议版本，tls版本，代理设置等    if (!this.route.address.equalsNonHost(address)) return false    // If the host exactly matches, we&#39;re done: this connection can carry the address.    //比对主机名    if (address.url.host == this.route().address.url.host) &#123;      return true // This connection is a perfect match.    &#125;    // At this point we don&#39;t have a hostname match. But we still be able to carry the request if    // our connection coalescing requirements are met. See also:    // https://hpbn.co/optimizing-application-delivery/#eliminate-domain-sharding    // https://daniel.haxx.se/blog/2016/08/18/http2-connection-coalescing/    // 1. This connection must be HTTP/2.    if (http2Connection == null) return false    // 2. The routes must share an IP address.    //判断IP与代理    if (routes == null || !routeMatchesAny(routes)) return false    // 3. This connection&#39;s server certificate&#39;s must cover the new host.    //判断host与持有证书是否一致    if (address.hostnameVerifier !== OkHostnameVerifier) return false    if (!supportsUrl(address.url)) return false    // 4. Certificate pinning must match the host.    //验证证书pinning与host知否匹配    try &#123;      address.certificatePinner!!.check(address.url.host, handshake()!!.peerCertificates)    &#125; catch (_: SSLPeerUnverifiedException) &#123;      return false    &#125;    return true // The caller&#39;s address can be carried by this connection.  &#125;</code></pre><p>https的各种协议验证，证书验证等都在这里完成</p><h3 id="CallServerInterceptor"><a href="#CallServerInterceptor" class="headerlink" title="CallServerInterceptor"></a>CallServerInterceptor</h3>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;OkHttp&quot;&gt;&lt;a href=&quot;#OkHttp&quot; class=&quot;headerlink&quot; title=&quot;OkHttp&quot;&gt;&lt;/a&gt;OkHttp&lt;/h1&gt;&lt;p&gt;主要方法入口：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;kotlin&quot;&gt;#RealCall.kt#  
+</summary>
+      
+    
+    
+    
+    <category term="Android" scheme="https://sqbfine.top/categories/Android/"/>
+    
+    
+    <category term="Android，源码分析" scheme="https://sqbfine.top/tags/Android%EF%BC%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Blog范本</title>
+    <link href="https://sqbfine.top/2022/10/11/Blog%E8%8C%83%E6%9C%AC/"/>
+    <id>https://sqbfine.top/2022/10/11/Blog%E8%8C%83%E6%9C%AC/</id>
+    <published>2022-10-11T06:58:44.609Z</published>
+    <updated>2022-10-11T06:58:44.609Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="一级标题"><a href="#一级标题" class="headerlink" title="一级标题"></a>一级标题</h1><p><img src="https://i.loli.net/2021/12/03/ds8ITg5Ja7C2DqN.jpg" alt="avatar"></p><table><thead><tr><th>测试表格</th><th>测试白哦个</th><th>侧搜表格</th><th>hhh</th><th>呵呵呵</th><th>哈哈</th></tr></thead><tbody><tr><td>test</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td></tr></tbody></table><p>[<a href="http://www.baidu.com]">www.baidu.com]</a>: </p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;一级标题&quot;&gt;&lt;a href=&quot;#一级标题&quot; class=&quot;headerlink&quot; title=&quot;一级标题&quot;&gt;&lt;/a&gt;一级标题&lt;/h1&gt;&lt;p&gt;&lt;img src=&quot;https://i.loli.net/2021/12/03/ds8ITg5Ja7C2DqN.jpg&quot; a</summary>
+      
+    
+    
+    
+    <category term="bolg" scheme="https://sqbfine.top/categories/bolg/"/>
+    
+    
+    <category term="Mac" scheme="https://sqbfine.top/tags/Mac/"/>
+    
+    <category term="hexo" scheme="https://sqbfine.top/tags/hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hexo命令</title>
+    <link href="https://sqbfine.top/2022/10/11/Hexo%E5%91%BD%E4%BB%A4/"/>
+    <id>https://sqbfine.top/2022/10/11/Hexo%E5%91%BD%E4%BB%A4/</id>
+    <published>2022-10-11T06:58:44.609Z</published>
+    <updated>2022-10-11T06:58:44.609Z</updated>
+    
+    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><pre><code class="text">&lt;!-- more --&gt;</code></pre><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre><code class="bash">$ hexo new &quot;My New Post&quot;</code></pre><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre><code class="bash">$ hexo server</code></pre><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre><code class="bash">$ hexo generate</code></pre><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre><code class="bash">$ hexo deploy</code></pre><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt; for</summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>View绘制流程（待补充）</title>
+    <link href="https://sqbfine.top/2022/10/11/15.View%E7%BB%98%E5%88%B6%E6%B5%81%E7%A8%8B/"/>
+    <id>https://sqbfine.top/2022/10/11/15.View%E7%BB%98%E5%88%B6%E6%B5%81%E7%A8%8B/</id>
+    <published>2022-10-11T06:58:44.605Z</published>
+    <updated>2022-10-11T06:58:44.605Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="View绘制流程"><a href="#View绘制流程" class="headerlink" title="View绘制流程"></a>View绘制流程</h1><h2 id="问题：子线程可以更新view吗"><a href="#问题：子线程可以更新view吗" class="headerlink" title="问题：子线程可以更新view吗"></a>问题：子线程可以更新view吗</h2><p>setText会不断向上调用View.requestLayout</p><p>ViewRootImpl：checkThread方法的调用是关键</p><h2 id="控件树的结构"><a href="#控件树的结构" class="headerlink" title="控件树的结构"></a>控件树的结构</h2><p><code>setContentView</code>时发生了什么</p><pre><code class="java">#ActivitygetWindow().setContentView(layoutResID);</code></pre><p>Activity内有一个PhoneWindow extend Window</p><pre><code class="java">#PhoneWindowinstallDecor() &#123;    DecorView mDecor = generateDecor(-1);    ViewGroup mContentParent = generateLayout(mDecor);&#125;</code></pre><p>setContentView时PhoneWindow会创建一个DecorView extend Framelayout，这样window就和view联系起来了</p><p>然后generateLayout中会根据主题修改窗口布局，有两次一次从style.xml 另一次时requestWindowFeature的配置</p><pre><code>#PhoneWindowgenerateLayout (DecorView d) &#123;    根据主题找一个layoutResource    mDecor.onResourcesLoaded(mLayoutInflater, layoutResource);&#125;</code></pre><pre><code>#DecorViewvoid onResourcesLoaded(LayoutInflater inflater, int layoutResource) &#123;    final View root = inflater.inflate(layoutResource, null);    addView(root, 0, new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));&#125;</code></pre><p>把传入的 layoutResource add 进 DecorView</p><pre><code>#PhoneWindowViewGroup contentParent = (ViewGroup)getDecorView().findViewById(之前layoutResource中的content)</code></pre><p>拿出布局中的contentParent</p><pre><code>#PhoneWindowpublic void setContentView(int layoutResID) &#123;    mLayoutInflater.inflate(layoutResID, 上面的contentParent);&#125;</code></pre><h2 id="DecorView-的父控件-ViewRootImpl"><a href="#DecorView-的父控件-ViewRootImpl" class="headerlink" title="DecorView 的父控件 ViewRootImpl"></a>DecorView 的父控件 ViewRootImpl</h2><p>ViewRootImpl在WindowManagerGlobal的addView中被创建–&gt;WindowManagerImpl的addView方法 –&gt; ActivityThread的handleResumeActivity方法</p><h2 id="SurfaceView"><a href="#SurfaceView" class="headerlink" title="SurfaceView"></a>SurfaceView</h2><p>独有一个surface，通过surfaceflinger合并与activity的surface绘制，总是处于最下层，所以wms把上层的view掏空，有待机黑屏问题，可以拿到surfaceview的canvanse，但也无法彻底解决</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;View绘制流程&quot;&gt;&lt;a href=&quot;#View绘制流程&quot; class=&quot;headerlink&quot; title=&quot;View绘制流程&quot;&gt;&lt;/a&gt;View绘制流程&lt;/h1&gt;&lt;h2 id=&quot;问题：子线程可以更新view吗&quot;&gt;&lt;a href=&quot;#问题：子线程可以更新view</summary>
+      
+    
+    
+    
+    <category term="Android" scheme="https://sqbfine.top/categories/Android/"/>
+    
+    
+    <category term="Android，Framework" scheme="https://sqbfine.top/tags/Android%EF%BC%8CFramework/"/>
+    
+  </entry>
+  
+</feed>
